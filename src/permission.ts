@@ -9,6 +9,7 @@ import { useUserStore } from '@/store/modules/user';
 import { useSettingsStore } from '@/store/modules/settings';
 import { usePermissionStore } from '@/store/modules/permission';
 import { ElMessage } from 'element-plus/es';
+import { isMicroApp } from '@/micro';
 
 NProgress.configure({ showSpinner: false });
 const whiteList = ['/login', '/register', '/social-callback', '/register*', '/register/*'];
@@ -27,6 +28,8 @@ router.beforeEach(async (to, from, next) => {
       NProgress.done();
     } else if (isWhiteList(to.path)) {
       next();
+    } else if (isMicroApp(to.path)) {
+      next({ path: '/blank', query: { redirect: to.fullPath } });
     } else {
       if (useUserStore().roles.length === 0) {
         isRelogin.show = true;

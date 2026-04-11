@@ -15,6 +15,11 @@ import directive from './directive';
 // 注册插件
 import plugins from './plugins/index'; // plugins
 
+// 微前端消息总线
+import { msgBus } from '@/micro';
+(window as any).__VITE_ROUTER__ = router;
+(window as any).__QIANKUN_MSG_BUS__ = msgBus;
+
 // 高亮组件
 // import 'highlight.js/styles/a11y-light.css';
 import 'highlight.js/styles/atom-one-dark.css';

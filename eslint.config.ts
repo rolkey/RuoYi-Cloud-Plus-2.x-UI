@@ -38,7 +38,9 @@ export default defineConfigWithVueTs(
       'prettier/prettier': 'error',
       // 允许使用空Object类型 {}
       '@typescript-eslint/no-empty-object-type': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off'
+      '@typescript-eslint/no-unused-expressions': 'off',
+      // 关闭函数调用换行规则，交由 Prettier 处理
+      'function-paren-newline': 'off'
     }
   }
 );

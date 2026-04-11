@@ -88,6 +88,11 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/blank',
+    component: () => import('@/views/common/microBlank.vue'),
+    hidden: true
   }
 ];
 

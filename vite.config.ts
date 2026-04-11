@@ -12,17 +12,13 @@ export default defineConfig(({ mode, command }) => {
       target: env.VITE_APP_TARGET_API,
       changeOrigin: true,
       ws: true,
-      rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
+      rewrite: (path: string) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
     }
   };
 
   // 在开发环境下打印代理配置
   if (command === 'serve') {
-    console.log(
-      '[代理配置] Proxy Configuration:',
-      `代理路径: ${env.VITE_APP_BASE_API}`,
-      `目标地址: ${env.VITE_APP_TARGET_API}`
-    );
+    console.log(`代理路径: ${env.VITE_APP_BASE_API}`, `目标地址: ${env.VITE_APP_TARGET_API}`);
   }
 
   return {

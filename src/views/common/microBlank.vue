@@ -24,7 +24,7 @@ const microAppInfo = computed(() => {
 
 onMounted(async () => {
   if (microAppInfo.value) {
-    await createMicroApp(route.query.redirect as string || route.path, 'main');
+    await createMicroApp((route.query.redirect as string) || route.path, 'main');
   }
 });
 

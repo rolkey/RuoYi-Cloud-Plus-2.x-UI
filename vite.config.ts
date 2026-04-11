@@ -5,6 +5,26 @@ import path from 'path';
 
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd());
+
+  // 添加代理路径输出
+  const proxyConfig = {
+    [env.VITE_APP_BASE_API]: {
+      target: env.VITE_APP_TARGET_API,
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
+    }
+  };
+
+  // 在开发环境下打印代理配置
+  if (command === 'serve') {
+    console.log(
+      '[代理配置] Proxy Configuration:',
+      `代理路径: ${env.VITE_APP_BASE_API}`,
+      `目标地址: ${env.VITE_APP_TARGET_API}`
+    );
+  }
+
   return {
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
@@ -21,15 +41,7 @@ export default defineConfig(({ mode, command }) => {
     server: {
       host: '0.0.0.0',
       port: Number(env.VITE_APP_PORT),
-      open: true,
-      proxy: {
-        [env.VITE_APP_BASE_API]: {
-          target: 'http://localhost:8080',
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
-        }
-      }
+      proxy: proxyConfig
     },
     css: {
       preprocessorOptions: {

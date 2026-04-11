@@ -9,6 +9,7 @@ import ParentView from '@/components/ParentView/index.vue';
 import InnerLink from '@/layout/components/InnerLink/index.vue';
 import { ref } from 'vue';
 import { createCustomNameComponent } from '@/utils/createCustomNameComponent';
+import { ElNotification } from 'element-plus';
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue');
@@ -73,7 +74,11 @@ export const usePermissionStore = defineStore('permission', () => {
    * @param lastRouter 上一级路由
    * @param type 是否是重写路由
    */
-  const filterAsyncRouter = (asyncRouterMap: RouteRecordRaw[], lastRouter?: RouteRecordRaw, type = false): RouteRecordRaw[] => {
+  const filterAsyncRouter = (
+    asyncRouterMap: RouteRecordRaw[],
+    lastRouter?: RouteRecordRaw,
+    type = false
+  ): RouteRecordRaw[] => {
     return asyncRouterMap.filter((route) => {
       if (type && route.children) {
         route.children = filterChildren(route.children, undefined);
@@ -97,6 +102,8 @@ export const usePermissionStore = defineStore('permission', () => {
       return true;
     });
   };
+
+  // 遍历路由，生成菜单
   const filterChildren = (childrenMap: RouteRecordRaw[], lastRouter?: RouteRecordRaw): RouteRecordRaw[] => {
     let children: RouteRecordRaw[] = [];
     childrenMap.forEach((el) => {

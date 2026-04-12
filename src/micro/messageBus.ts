@@ -6,7 +6,7 @@ import { useAppStore } from '@/store/modules/app';
 import { usePermissionStore } from '@/store/modules/permission';
 import { useSettingsStore } from '@/store/modules/settings';
 import { useDictStore } from '@/store/modules/dict';
-import { setToken } from '@/utils/auth';
+import { getToken } from '@/utils/auth';
 
 interface MessageBusEvents {
   m_request: any;
@@ -28,9 +28,7 @@ class MessageBus implements Emitter<MessageBusEvents> {
   usePermissionStore = () => usePermissionStore();
   useDictStore = () => useDictStore();
   settingsStore = () => useSettingsStore();
-  useDict = (...args: any[]) => {
-    return useDictStore().getDict(args[0]);
-  };
+  getToken = () => getToken();
 
   all = this.emitter.all;
 

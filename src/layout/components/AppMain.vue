@@ -8,17 +8,23 @@
       </transition>
     </router-view>
     <iframe-toggle />
+    <keep-alive>
+      <qian-kun-div :microId="microId" />
+    </keep-alive>
   </section>
 </template>
 
 <script setup name="AppMain" lang="ts">
 import { useSettingsStore } from '@/store/modules/settings';
 import { useTagsViewStore } from '@/store/modules/tagsView';
+import QianKunDiv from '@/components/QianKun/index.vue';
 
 import IframeToggle from './IframeToggle/index.vue';
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const route = useRoute();
 const tagsViewStore = useTagsViewStore();
+
+const microId = ref('Layout');
 
 // 随机动画集合
 const animate = ref<string>('');
@@ -28,7 +34,9 @@ watch(
   (val: boolean) => {
     animationEnable.value = val;
     if (val) {
-      animate.value = proxy?.animate.animateList[Math.round(Math.random() * proxy?.animate.animateList.length)] as string;
+      animate.value = proxy?.animate.animateList[
+        Math.round(Math.random() * proxy?.animate.animateList.length)
+      ] as string;
     } else {
       animate.value = proxy?.animate.defaultAnimate as string;
     }

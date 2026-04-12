@@ -39,6 +39,9 @@ export default defineConfig(({ mode, command }) => {
       port: Number(env.VITE_APP_PORT),
       proxy: proxyConfig
     },
+    build: {
+      sourcemap: false
+    },
     css: {
       preprocessorOptions: {
         scss: {

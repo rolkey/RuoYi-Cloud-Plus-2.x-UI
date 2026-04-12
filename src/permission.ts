@@ -28,8 +28,8 @@ router.beforeEach(async (to, from, next) => {
       NProgress.done();
     } else if (isWhiteList(to.path)) {
       next();
-    } else if (isMicroApp(to.path)) {
-      next({ path: '/blank', query: { redirect: to.fullPath } });
+      // } else if (isMicroApp(to.path)) {
+      //   next({ path: '/blank', query: { redirect: to.fullPath } });
     } else {
       if (useUserStore().roles.length === 0) {
         isRelogin.show = true;
@@ -48,8 +48,14 @@ router.beforeEach(async (to, from, next) => {
               router.addRoute(route); // 动态添加可访问路由表
             }
           });
-          // @ts-expect-error hack方法 确保addRoutes已完成
-          next({ path: to.path, replace: true, params: to.params, query: to.query, hash: to.hash, name: to.name as string }); // hack方法 确保addRoutes已完成
+          next({
+            path: to.path,
+            replace: true,
+            params: to.params,
+            query: to.query,
+            hash: to.hash,
+            name: to.name as string
+          }); // hack方法 确保addRoutes已完成
         }
       } else {
         next();

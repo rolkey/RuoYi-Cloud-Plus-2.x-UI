@@ -28,6 +28,7 @@ export function createMicroApp(path: string, microId: string): Promise<void> {
 
     setTimeout(() => {
       try {
+        microAppInfo.container = '#' + appId;
         const microApp = loadMicroApp(
           {
             name: microAppInfo.name,

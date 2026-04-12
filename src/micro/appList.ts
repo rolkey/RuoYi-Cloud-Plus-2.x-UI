@@ -14,6 +14,14 @@ export interface MicroAppItem {
   container: string;
 }
 
+export function getMicroAppIndex(path: string) {
+  let index = -1;
+  microAppList.forEach((item, itemIndex) => {
+    if (path.startsWith(item.activeRule)) index = itemIndex;
+  });
+  return index;
+}
+
 export function findMicroAppByPath(path: string): MicroAppItem | undefined {
   return microAppList.find((item) => path.startsWith(item.activeRule));
 }

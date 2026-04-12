@@ -10,6 +10,7 @@ import InnerLink from '@/layout/components/InnerLink/index.vue';
 import { ref } from 'vue';
 import { createCustomNameComponent } from '@/utils/createCustomNameComponent';
 import { ElNotification } from 'element-plus';
+import MicroBlank from '@/views/common/microBlank.vue';
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue');
@@ -91,7 +92,12 @@ export const usePermissionStore = defineStore('permission', () => {
       } else if (route.component?.toString() === 'InnerLink') {
         route.component = InnerLink;
       } else {
+        const component = route.component as string;
         route.component = loadView(route.component, route.name as string);
+        if (!route.component) {
+          route.component = MicroBlank;
+          route.meta.component = component; // 保留组件字符串
+        }
       }
       if (route.children != null && route.children && route.children.length) {
         route.children = filterAsyncRouter(route.children, route, type);

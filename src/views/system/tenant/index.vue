@@ -1,20 +1,43 @@
 <template>
   <div class="p-2">
-    <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+    <transition
+      :enter-active-class="proxy?.animate.searchAnimate.enter"
+      :leave-active-class="proxy?.animate.searchAnimate.leave"
+    >
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
             <el-form-item label="租户编号" prop="tenantId">
-              <el-input v-model="queryParams.tenantId" placeholder="请输入租户编号" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.tenantId"
+                placeholder="请输入租户编号"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="联系人" prop="contactUserName">
-              <el-input v-model="queryParams.contactUserName" placeholder="请输入联系人" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.contactUserName"
+                placeholder="请输入联系人"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="联系电话" prop="contactPhone">
-              <el-input v-model="queryParams.contactPhone" placeholder="请输入联系电话" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.contactPhone"
+                placeholder="请输入联系电话"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item label="企业名称" prop="companyName">
-              <el-input v-model="queryParams.companyName" placeholder="请输入企业名称" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.companyName"
+                placeholder="请输入企业名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -29,26 +52,52 @@
       <template #header>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenant:add']" type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
+            <el-button v-hasPermi="['system:tenant:add']" type="primary" plain icon="Plus" @click="handleAdd"
+              >新增</el-button
+            >
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenant:edit']" type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()"
+            <el-button
+              v-hasPermi="['system:tenant:edit']"
+              type="success"
+              plain
+              icon="Edit"
+              :disabled="single"
+              @click="handleUpdate()"
               >修改</el-button
             >
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenant:remove']" type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()">
+            <el-button
+              v-hasPermi="['system:tenant:remove']"
+              type="danger"
+              plain
+              icon="Delete"
+              :disabled="multiple"
+              @click="handleDelete()"
+            >
               删除
             </el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenant:export']" type="warning" plain icon="Download" @click="handleExport">导出</el-button>
+            <el-button
+              v-hasPermi="['system:tenant:export']"
+              type="warning"
+              plain
+              icon="Download"
+              @click="handleExport"
+              >导出</el-button
+            >
           </el-col>
           <el-col :span="1.5">
-            <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantDict">同步租户字典</el-button>
+            <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantDict"
+              >同步租户字典</el-button
+            >
           </el-col>
           <el-col :span="1.5">
-            <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantConfig">同步租户参数配置</el-button>
+            <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantConfig"
+              >同步租户参数配置</el-button
+            >
           </el-col>
           <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
         </el-row>
@@ -69,26 +118,61 @@
         </el-table-column>
         <el-table-column label="租户状态" align="center" prop="status">
           <template #default="scope">
-            <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="handleStatusChange(scope.row)"></el-switch>
+            <el-switch
+              v-model="scope.row.status"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+            ></el-switch>
           </template>
         </el-table-column>
-        <el-table-column width="150" label="操作" align="center" fixed="right" class-name="small-padding fixed-width">
+        <el-table-column
+          width="150"
+          label="操作"
+          align="center"
+          fixed="right"
+          class-name="small-padding fixed-width"
+        >
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
-              <el-button v-hasPermi="['system:tenant:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
+              <el-button
+                v-hasPermi="['system:tenant:edit']"
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(scope.row)"
+              ></el-button>
             </el-tooltip>
             <el-tooltip content="同步套餐" placement="top">
-              <el-button v-hasPermi="['system:tenant:edit']" link type="primary" icon="Refresh" @click="handleSyncTenantPackage(scope.row)">
+              <el-button
+                v-hasPermi="['system:tenant:edit']"
+                link
+                type="primary"
+                icon="Refresh"
+                @click="handleSyncTenantPackage(scope.row)"
+              >
               </el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <el-button v-hasPermi="['system:tenant:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
+              <el-button
+                v-hasPermi="['system:tenant:remove']"
+                link
+                type="primary"
+                icon="Delete"
+                @click="handleDelete(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
+      <pagination
+        v-show="total > 0"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        :total="total"
+        @pagination="getList"
+      />
     </el-card>
     <!-- 添加或修改租户对话框 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body>
@@ -109,12 +193,29 @@
           <el-input v-model="form.password" type="password" placeholder="请输入系统用户密码" maxlength="20" />
         </el-form-item>
         <el-form-item label="租户套餐" prop="packageId">
-          <el-select v-model="form.packageId" :disabled="!!form.tenantId" placeholder="请选择租户套餐" clearable style="width: 100%">
-            <el-option v-for="item in packageList" :key="item.packageId" :label="item.packageName" :value="item.packageId" />
+          <el-select
+            v-model="form.packageId"
+            :disabled="!!form.tenantId"
+            placeholder="请选择医院权限 "
+            clearable
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in packageList"
+              :key="item.packageId"
+              :label="item.packageName"
+              :value="item.packageId"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="过期时间" prop="expireTime">
-          <el-date-picker v-model="form.expireTime" clearable type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择过期时间">
+          <el-date-picker
+            v-model="form.expireTime"
+            clearable
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            placeholder="请选择过期时间"
+          >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="用户数量" prop="accountCount">

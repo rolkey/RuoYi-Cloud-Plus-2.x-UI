@@ -1,11 +1,19 @@
 <template>
   <div class="p-2">
-    <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+    <transition
+      :enter-active-class="proxy?.animate.searchAnimate.enter"
+      :leave-active-class="proxy?.animate.searchAnimate.leave"
+    >
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
             <el-form-item label="套餐名称" prop="packageName">
-              <el-input v-model="queryParams.packageName" placeholder="请输入套餐名称" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.packageName"
+                placeholder="请输入套餐名称"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -20,48 +28,105 @@
       <template #header>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenantPackage:add']" type="primary" plain icon="Plus" @click="handleAdd"> 新增 </el-button>
+            <el-button
+              v-hasPermi="['system:tenantPackage:add']"
+              type="primary"
+              plain
+              icon="Plus"
+              @click="handleAdd"
+            >
+              新增
+            </el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenantPackage:edit']" type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()">
+            <el-button
+              v-hasPermi="['system:tenantPackage:edit']"
+              type="success"
+              plain
+              icon="Edit"
+              :disabled="single"
+              @click="handleUpdate()"
+            >
               修改
             </el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenantPackage:remove']" type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()">
+            <el-button
+              v-hasPermi="['system:tenantPackage:remove']"
+              type="danger"
+              plain
+              icon="Delete"
+              :disabled="multiple"
+              @click="handleDelete()"
+            >
               删除
             </el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button v-hasPermi="['system:tenantPackage:export']" type="warning" plain icon="Download" @click="handleExport">导出 </el-button>
+            <el-button
+              v-hasPermi="['system:tenantPackage:export']"
+              type="warning"
+              plain
+              icon="Download"
+              @click="handleExport"
+              >导出
+            </el-button>
           </el-col>
           <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
         </el-row>
       </template>
 
-      <el-table v-loading="loading" border :data="tenantPackageList" @selection-change="handleSelectionChange">
+      <el-table
+        v-loading="loading"
+        border
+        :data="tenantPackageList"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column v-if="false" label="租户套餐id" align="center" prop="packageId" />
         <el-table-column label="套餐名称" align="center" prop="packageName" />
         <el-table-column label="备注" align="center" prop="remark" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
-            <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @click="handleStatusChange(scope.row)"></el-switch>
+            <el-switch
+              v-model="scope.row.status"
+              active-value="0"
+              inactive-value="1"
+              @click="handleStatusChange(scope.row)"
+            ></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
-              <el-button v-hasPermi="['system:tenantPackage:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
+              <el-button
+                v-hasPermi="['system:tenantPackage:edit']"
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(scope.row)"
+              ></el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <el-button v-hasPermi="['system:tenantPackage:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
+              <el-button
+                v-hasPermi="['system:tenantPackage:remove']"
+                link
+                type="primary"
+                icon="Delete"
+                @click="handleDelete(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
 
-      <pagination v-show="total > 0" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" :total="total" @pagination="getList" />
+      <pagination
+        v-show="total > 0"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        :total="total"
+        @pagination="getList"
+      />
     </el-card>
 
     <!-- 添加或修改租户套餐对话框 -->
@@ -71,9 +136,15 @@
           <el-input v-model="form.packageName" placeholder="请输入套餐名称" />
         </el-form-item>
         <el-form-item label="关联菜单">
-          <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选 </el-checkbox>
-          <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动 </el-checkbox>
+          <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')"
+            >展开/折叠</el-checkbox
+          >
+          <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')"
+            >全选/全不选
+          </el-checkbox>
+          <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')"
+            >父子联动
+          </el-checkbox>
           <el-tree
             ref="menuTreeRef"
             class="tree-border"
@@ -189,7 +260,9 @@ const getList = async () => {
 // 租户套餐状态修改
 const handleStatusChange = async (row: TenantPkgVO) => {
   const text = row.status === '0' ? '启用' : '停用';
-  const [err] = await to(proxy?.$modal.confirm('确认要"' + text + '""' + row.packageName + '"套餐吗？') as Promise<any>);
+  const [err] = await to(
+    proxy?.$modal.confirm('确认要"' + text + '""' + row.packageName + '"套餐吗？') as Promise<any>
+  );
   if (err) {
     row.status = row.status === '0' ? '1' : '0';
   } else {

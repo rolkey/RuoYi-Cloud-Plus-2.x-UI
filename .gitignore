@@ -12,6 +12,7 @@ tests/e2e/reports
 selenium-debug.log
 
 # Editor directories and files
+*.gz
 .idea
 .vscode
 *.suo
@@ -27,3 +28,4 @@ pnpm-lock.yaml
 # 编译生成的文件
 auto-imports.d.ts
 components.d.ts
+.eslintrc-auto-import.json

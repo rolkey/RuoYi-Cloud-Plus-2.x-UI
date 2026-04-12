@@ -1,15 +1,28 @@
 <template>
   <div>
     <el-dialog v-model="roleDialog.visible.value" :title="roleDialog.title.value" width="80%" append-to-body>
-      <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+      <transition
+        :enter-active-class="proxy?.animate.searchAnimate.enter"
+        :leave-active-class="proxy?.animate.searchAnimate.leave"
+      >
         <div v-show="showSearch" class="mb-[10px]">
           <el-card shadow="hover">
             <el-form ref="queryFormRef" :model="queryParams" :inline="true">
               <el-form-item label="角色名称" prop="roleName">
-                <el-input v-model="queryParams.roleName" placeholder="请输入角色名称" clearable @keyup.enter="handleQuery" />
+                <el-input
+                  v-model="queryParams.roleName"
+                  placeholder="请输入角色名称"
+                  clearable
+                  @keyup.enter="handleQuery"
+                />
               </el-form-item>
               <el-form-item label="权限字符" prop="roleKey">
-                <el-input v-model="queryParams.roleKey" placeholder="请输入权限字符" clearable @keyup.enter="handleQuery" />
+                <el-input
+                  v-model="queryParams.roleKey"
+                  placeholder="请输入权限字符"
+                  clearable
+                  @keyup.enter="handleQuery"
+                />
               </el-form-item>
 
               <el-form-item>
@@ -23,7 +36,13 @@
 
       <el-card shadow="hover">
         <template #header>
-          <el-tag v-for="role in selectRoleList" :key="role.roleId" closable style="margin: 2px" @close="handleCloseTag(role)">
+          <el-tag
+            v-for="role in selectRoleList"
+            :key="role.roleId"
+            closable
+            style="margin: 2px"
+            @close="handleCloseTag(role)"
+          >
             {{ role.roleName }}
           </el-tag>
         </template>
@@ -133,7 +152,9 @@ const computedIds = (data) => {
   } else if (typeof data === 'number') {
     return [data];
   } else {
-    console.warn('<RoleSelect> The data type of data should be array or string or number, but I received other');
+    console.warn(
+      '<RoleSelect> The data type of data should be array or string or number, but I received other'
+    );
     return [];
   }
 };

@@ -40,7 +40,13 @@ export default defineConfig(({ mode, command }) => {
       proxy: proxyConfig
     },
     build: {
-      sourcemap: false
+      sourcemap: false,
+      minify: 'terser', // 使用 terser
+      terserOptions: {
+        compress: {
+          drop_debugger: true // 移除所有 debugger
+        }
+      }
     },
     css: {
       preprocessorOptions: {

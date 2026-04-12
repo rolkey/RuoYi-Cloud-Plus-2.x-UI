@@ -21,15 +21,28 @@
           </el-card>
         </el-col>
         <el-col :lg="20" :xs="24">
-          <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+          <transition
+            :enter-active-class="proxy?.animate.searchAnimate.enter"
+            :leave-active-class="proxy?.animate.searchAnimate.leave"
+          >
             <div v-show="showSearch" class="mb-[10px]">
               <el-card shadow="hover">
                 <el-form ref="queryFormRef" :model="queryParams" :inline="true">
                   <el-form-item label="用户名称" prop="userName">
-                    <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable @keyup.enter="handleQuery" />
+                    <el-input
+                      v-model="queryParams.userName"
+                      placeholder="请输入用户名称"
+                      clearable
+                      @keyup.enter="handleQuery"
+                    />
                   </el-form-item>
                   <el-form-item label="手机号码" prop="phonenumber">
-                    <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable @keyup.enter="handleQuery" />
+                    <el-input
+                      v-model="queryParams.phonenumber"
+                      placeholder="请输入手机号码"
+                      clearable
+                      @keyup.enter="handleQuery"
+                    />
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -42,7 +55,13 @@
 
           <el-card shadow="hover">
             <template v-if="prop.multiple" #header>
-              <el-tag v-for="user in selectUserList" :key="user.userId" closable style="margin: 2px" @close="handleCloseTag(user)">
+              <el-tag
+                v-for="user in selectUserList"
+                :key="user.userId"
+                closable
+                style="margin: 2px"
+                @close="handleCloseTag(user)"
+              >
                 {{ user.nickName }}
               </el-tag>
             </template>
@@ -178,7 +197,9 @@ const computedIds = (data) => {
   } else if (typeof data === 'number') {
     return [String(data)];
   } else {
-    console.warn('<UserSelect> The data type of data should be array or string or number, but I received other');
+    console.warn(
+      '<UserSelect> The data type of data should be array or string or number, but I received other'
+    );
     return [];
   }
 };

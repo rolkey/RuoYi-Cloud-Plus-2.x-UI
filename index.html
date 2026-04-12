@@ -21,6 +21,10 @@
         padding: 0px;
       }
 
+      :root {
+        --min-height-value: calc(100vh - 84px);
+      }
+
       .chromeframe {
         margin: 0.2em 0;
         background: #ccc;
@@ -88,6 +92,11 @@
         -ms-animation: spin 1.5s linear infinite;
         -webkit-animation: spin 1.5s linear infinite;
         animation: spin 1.5s linear infinite;
+      }
+
+      #__qiankun_microapp_wrapper_for_his__ {
+        min-height: var(--min-height-value);
+        background-color: amber;
       }
 
       @-webkit-keyframes spin {

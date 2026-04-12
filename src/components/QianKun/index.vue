@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="app-main" id="microApps">
     <div
+      class="child-main"
       v-show="microAppIndex === index"
       v-for="(item, index) in microAppList"
       :key="item.name"
@@ -38,3 +39,9 @@ defineExpose({
   showMicroApp: microAppIndex.value > -1
 });
 </script>
+
+<style lang="scss" scoped>
+.child-main {
+  min-height: var(--min-height-value);
+}
+</style>

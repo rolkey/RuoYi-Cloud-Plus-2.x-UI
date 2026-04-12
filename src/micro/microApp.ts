@@ -48,7 +48,6 @@ export function createMicroApp(path: string, microId: string): Promise<void> {
         microApps.set(appId, microApp);
         microApp.mountPromise
           .then(() => {
-            console.log(`[MicroApp] ${appId} mounted successfully`);
             resolve();
           })
           .catch(reject);

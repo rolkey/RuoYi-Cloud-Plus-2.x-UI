@@ -6,13 +6,29 @@
         <lang-select />
       </div>
       <el-form-item v-if="tenantEnabled" prop="tenantId">
-        <el-select v-model="loginForm.tenantId" filterable :placeholder="proxy.$t('login.selectPlaceholder')" style="width: 100%">
-          <el-option v-for="item in tenantList" :key="item.tenantId" :label="item.companyName" :value="item.tenantId"></el-option>
+        <el-select
+          v-model="loginForm.tenantId"
+          filterable
+          :placeholder="proxy.$t('login.selectPlaceholder')"
+          style="width: 100%"
+        >
+          <el-option
+            v-for="item in tenantList"
+            :key="item.tenantId"
+            :label="item.companyName"
+            :value="item.tenantId"
+          ></el-option>
           <template #prefix><svg-icon icon-class="company" class="el-input__icon input-icon" /></template>
         </el-select>
       </el-form-item>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" type="text" size="large" auto-complete="off" :placeholder="proxy.$t('login.username')">
+        <el-input
+          v-model="loginForm.username"
+          type="text"
+          size="large"
+          auto-complete="off"
+          :placeholder="proxy.$t('login.username')"
+        >
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
@@ -43,7 +59,9 @@
           <img :src="codeUrl" class="login-code-img" @click="getCode" />
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0">{{ proxy.$t('login.rememberPassword') }}</el-checkbox>
+      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0">{{
+        proxy.$t('login.rememberPassword')
+      }}</el-checkbox>
       <el-form-item style="float: right">
         <el-button circle :title="proxy.$t('login.social.wechat')" @click="doSocialLogin('wechat')">
           <svg-icon icon-class="wechat" />
@@ -62,12 +80,20 @@
         </el-button>
       </el-form-item>
       <el-form-item style="width: 100%">
-        <el-button :loading="loading" size="large" type="primary" style="width: 100%" @click.prevent="handleLogin">
+        <el-button
+          :loading="loading"
+          size="large"
+          type="primary"
+          style="width: 100%"
+          @click.prevent="handleLogin"
+        >
           <span v-if="!loading">{{ proxy.$t('login.login') }}</span>
           <span v-else>{{ proxy.$t('login.logging') }}</span>
         </el-button>
         <div v-if="register" style="float: right">
-          <router-link class="link-type" :to="'/register'">{{ proxy.$t('login.switchRegisterPage') }}</router-link>
+          <router-link class="link-type" :to="'/register'">{{
+            proxy.$t('login.switchRegisterPage')
+          }}</router-link>
         </div>
       </el-form-item>
     </el-form>

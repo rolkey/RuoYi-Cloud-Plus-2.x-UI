@@ -130,10 +130,10 @@
     </el-card>
 
     <!-- 添加或修改租户套餐对话框 -->
-    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body>
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body draggable>
       <el-form ref="tenantPackageFormRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="套餐名称" prop="packageName">
-          <el-input v-model="form.packageName" placeholder="请输入套餐名称" />
+        <el-form-item label="权限名称" prop="packageName">
+          <el-input v-model="form.packageName" placeholder="请输入权限名称" />
         </el-form-item>
         <el-form-item label="关联菜单">
           <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')"
@@ -336,7 +336,7 @@ const handleAdd = async () => {
   reset();
   await getPackageMenuTreeselect(0);
   dialog.visible = true;
-  dialog.title = '添加租户套餐';
+  dialog.title = '添加分院权限';
 };
 
 /** 修改按钮操作 */

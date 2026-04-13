@@ -7,7 +7,7 @@
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-            <el-form-item label="租户编号" prop="tenantId">
+            <el-form-item label="HIS编号" prop="tenantId">
               <el-input
                 v-model="queryParams.tenantId"
                 placeholder="请输入租户编号"
@@ -174,8 +174,9 @@
         @pagination="getList"
       />
     </el-card>
+
     <!-- 添加或修改租户对话框 -->
-    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body>
+    <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body draggable>
       <el-form ref="tenantFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="企业名称" prop="companyName">
           <el-input v-model="form.companyName" placeholder="请输入企业名称" />
@@ -396,7 +397,7 @@ const handleAdd = () => {
   reset();
   getTenantPackage();
   dialog.visible = true;
-  dialog.title = '添加租户';
+  dialog.title = '添加分院';
 };
 
 /** 修改按钮操作 */
@@ -407,7 +408,7 @@ const handleUpdate = async (row?: TenantVO) => {
   const res = await getTenant(_id);
   Object.assign(form.value, res.data);
   dialog.visible = true;
-  dialog.title = '修改租户';
+  dialog.title = '修改分院';
 };
 
 /** 提交按钮 */

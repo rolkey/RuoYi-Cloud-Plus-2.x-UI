@@ -16,7 +16,7 @@ export default {
     switchRegisterPage: '立即注册',
     rule: {
       tenantId: {
-        required: '请输入您的租户编号'
+        required: '请输入HIS编号'
       },
       username: {
         required: '请输入您的账号'

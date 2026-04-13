@@ -1,13 +1,6 @@
 import { MicroAppItem } from '@/types/micro';
 
-export const microAppList: MicroAppItem[] = [
-  //   {
-  //     name: 'his',
-  //     entry: import.meta.env.VITE_APP_QIANKUN_ENTRY_HIS || '//localhost:10301',
-  //     activeRule: '/his',
-  //     container: '#his'
-  //   }
-];
+export const microAppList: MicroAppItem[] = [];
 
 export function getMicroAppIndex(path: string) {
   return microAppList.findIndex((item) => path.startsWith(item.activeRule));

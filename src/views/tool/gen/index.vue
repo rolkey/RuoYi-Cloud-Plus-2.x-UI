@@ -213,7 +213,9 @@ import { delTable, genCode, getDataNames, listTable, previewTable, synchDb } fro
 import { TableQuery, TableVO } from '@/api/tool/gen/types';
 import router from '@/router';
 import ImportTable from './importTable.vue';
+import { useServiceStore } from '@/store/modules/services';
 
+const tool = () => useServiceStore().servicePres.tool;
 const route = useRoute();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -281,7 +283,7 @@ const handleGenTable = async (row?: TableVO) => {
     await genCode(row.tableId);
     proxy?.$modal.msgSuccess('成功生成到自定义路径：' + row.genPath);
   } else {
-    proxy?.$download.zip('/tool/gen/batchGenCode?tableIdStr=' + tbIds, 'ruoyi.zip');
+    proxy?.$download.zip(`/${tool()}/gen/batchGenCode?tableIdStr=${tbIds}`, 'ruoyi.zip');
   }
 };
 /** 同步数据库操作 */
@@ -321,7 +323,10 @@ const handleSelectionChange = (selection: TableVO[]) => {
 /** 修改按钮操作 */
 const handleEditTable = (row?: TableVO) => {
   const tableId = row?.tableId || ids.value[0];
-  router.push({ path: '/tool/gen-edit/index/' + tableId, query: { pageNum: queryParams.value.pageNum } });
+  router.push({
+    path: `/tool/gen-edit/index/` + tableId,
+    query: { pageNum: queryParams.value.pageNum }
+  });
 };
 /** 删除按钮操作 */
 const handleDelete = async (row?: TableVO) => {

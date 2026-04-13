@@ -32,7 +32,9 @@ export const useTagsViewStore = defineStore('tagsView', () => {
   };
   const delIframeView = (view: RouteLocationNormalized): Promise<RouteLocationNormalized[]> => {
     return new Promise((resolve) => {
-      iframeViews.value = iframeViews.value.filter((item: RouteLocationNormalized) => item.path !== view.path);
+      iframeViews.value = iframeViews.value.filter(
+        (item: RouteLocationNormalized) => item.path !== view.path
+      );
       resolve([...(iframeViews.value as RouteLocationNormalized[])]);
     });
   };

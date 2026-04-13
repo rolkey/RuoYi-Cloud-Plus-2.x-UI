@@ -1,0 +1,30 @@
+{
+    "development": [
+        {
+            "name": "his",
+            "entry": "http://192.168.168.1:10301",
+            "activeRule": "/his",
+            "container": "#his"
+        },
+        {
+            "name": "lis",
+            "entry": "http://192.168.168.1:10302",
+            "activeRule": "/lis",
+            "container": "#lis"
+        }
+    ],
+    "production": [
+        {
+            "name": "his",
+            "entry": "/his",
+            "activeRule": "/his",
+            "container": "#his"
+        },
+        {
+            "name": "lis",
+            "entry": "/lis",
+            "activeRule": "/lis",
+            "container": "#lis"
+        }
+    ]
+}

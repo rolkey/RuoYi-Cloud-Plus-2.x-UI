@@ -48,14 +48,18 @@ VXETable.setConfig({
 
 // 修改 el-dialog 默认点击遮照为不关闭
 import { ElDialog } from 'element-plus';
+import { loadAppList } from './micro/appList';
 ElDialog.props.closeOnClickModal.default = false;
 
 const app = createApp(App);
 
+app.use(store);
+
+loadAppList();
+
 app.use(HighLight);
 app.use(ElementIcons);
 app.use(router);
-app.use(store);
 app.use(i18n);
 app.use(VXETable);
 app.use(plugins);

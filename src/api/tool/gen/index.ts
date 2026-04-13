@@ -1,19 +1,23 @@
 import request from '@/utils/request';
 import { DbTableQuery, DbTableVO, TableQuery, TableVO, GenTableVO, DbTableForm } from './types';
 import { AxiosPromise } from 'axios';
+import { useServiceStore } from '@/store/modules/services';
+
+const tool = () => useServiceStore().servicePres.tool;
 
 // 查询生成表数据
 export const listTable = (query: TableQuery): AxiosPromise<TableVO[]> => {
   return request({
-    url: '/tool/gen/list',
+    url: `/${tool()}/gen/list`,
     method: 'get',
     params: query
   });
 };
+
 // 查询db数据库列表
 export const listDbTable = (query: DbTableQuery): AxiosPromise<DbTableVO[]> => {
   return request({
-    url: '/tool/gen/db/list',
+    url: `/${tool()}/gen/db/list`,
     method: 'get',
     params: query
   });
@@ -22,7 +26,7 @@ export const listDbTable = (query: DbTableQuery): AxiosPromise<DbTableVO[]> => {
 // 查询表详细信息
 export const getGenTable = (tableId: string | number): AxiosPromise<GenTableVO> => {
   return request({
-    url: '/tool/gen/' + tableId,
+    url: `/${tool()}/gen/${tableId}`,
     method: 'get'
   });
 };
@@ -30,7 +34,7 @@ export const getGenTable = (tableId: string | number): AxiosPromise<GenTableVO> 
 // 修改代码生成信息
 export const updateGenTable = (data: DbTableForm): AxiosPromise<GenTableVO> => {
   return request({
-    url: '/tool/gen',
+    url: `/${tool()}/gen`,
     method: 'put',
     data: data
   });
@@ -39,7 +43,7 @@ export const updateGenTable = (data: DbTableForm): AxiosPromise<GenTableVO> => {
 // 导入表
 export const importTable = (data: { tables: string; dataName: string }): AxiosPromise<GenTableVO> => {
   return request({
-    url: '/tool/gen/importTable',
+    url: `/${tool()}/gen/importTable`,
     method: 'post',
     params: data
   });
@@ -48,7 +52,7 @@ export const importTable = (data: { tables: string; dataName: string }): AxiosPr
 // 预览生成代码
 export const previewTable = (tableId: string | number) => {
   return request({
-    url: '/tool/gen/preview/' + tableId,
+    url: `/${tool()}/gen/preview/${tableId}`,
     method: 'get'
   });
 };
@@ -56,7 +60,7 @@ export const previewTable = (tableId: string | number) => {
 // 删除表数据
 export const delTable = (tableId: string | number | Array<string | number>) => {
   return request({
-    url: '/tool/gen/' + tableId,
+    url: `/${tool()}/gen/${tableId}`,
     method: 'delete'
   });
 };
@@ -64,7 +68,7 @@ export const delTable = (tableId: string | number | Array<string | number>) => {
 // 生成代码（自定义路径）
 export const genCode = (tableId: string | number) => {
   return request({
-    url: '/tool/gen/genCode/' + tableId,
+    url: `/${tool()}/gen/genCode/${tableId}`,
     method: 'get'
   });
 };
@@ -72,7 +76,7 @@ export const genCode = (tableId: string | number) => {
 // 同步数据库
 export const synchDb = (tableId: string | number) => {
   return request({
-    url: '/tool/gen/synchDb/' + tableId,
+    url: `/${tool()}/gen/synchDb/${tableId}`,
     method: 'get'
   });
 };
@@ -80,7 +84,7 @@ export const synchDb = (tableId: string | number) => {
 // 获取数据源名称
 export const getDataNames = () => {
   return request({
-    url: '/tool/gen/getDataNames',
+    url: `/${tool()}/gen/getDataNames`,
     method: 'get'
   });
 };

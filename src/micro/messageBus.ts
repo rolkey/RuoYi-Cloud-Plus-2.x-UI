@@ -7,6 +7,7 @@ import { usePermissionStore } from '@/store/modules/permission';
 import { useSettingsStore } from '@/store/modules/settings';
 import { useDictStore } from '@/store/modules/dict';
 import { getToken } from '@/utils/auth';
+import router from '@/router';
 
 interface MessageBusEvents {
   m_request: any;
@@ -40,15 +41,14 @@ class MessageBus implements Emitter<MessageBusEvents> {
     this.on('m_request', (data: any) => {
       request(data)
         .then((res) => {
-          this.emit('c_response', { ...res, requestId: data.requestId });
+          this.emit('c_response_' + data.requestId, { ...res });
         })
         .catch((error) => {
-          this.emit('c_response_fail', { error, requestId: data.requestId });
+          this.emit('c_response_fail_' + data.requestId, { error });
         });
     });
 
     this.on('m_routeTo', (path: string | { path: string }) => {
-      const router = (window as any).__VITE_ROUTER__;
       if (router) {
         router.replace(path);
       }
@@ -62,8 +62,12 @@ class MessageBus implements Emitter<MessageBusEvents> {
           type: 'warning'
         });
         await useUserStore().logout();
-        const router = (window as any).__VITE_ROUTER__;
-        router?.replace({ path: '/login' });
+        router.replace({
+          path: '/login',
+          query: {
+            redirect: encodeURIComponent(router.currentRoute.value.fullPath || '/')
+          }
+        });
       } catch {}
     });
 

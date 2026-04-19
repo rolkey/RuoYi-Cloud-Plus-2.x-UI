@@ -40,7 +40,7 @@ export function createMicroApp(path: string, microId: string): Promise<void> {
           },
           {
             sandbox: {
-              experimentalStyleIsolation: true
+              experimentalStyleIsolation: false
             }
           }
         );

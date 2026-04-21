@@ -34,6 +34,16 @@
                 />
               </el-select>
             </el-form-item>
+            <el-form-item label="标准科室" prop="standDept">
+              <el-select v-model="queryParams.standDept" placeholder="部门状态" clearable>
+                <el-option
+                  v-for="dict in sys_normal_disable"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
+              </el-select>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -70,6 +80,11 @@
         <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
         <el-table-column prop="deptCategory" align="center" label="类别编码" width="200"></el-table-column>
         <el-table-column prop="orderNum" align="center" label="排序" width="200"></el-table-column>
+        <el-table-column prop="standDeptId" align="center" label="标准科室" width="100">
+          <template #default="scope">
+            <dict-tag :options="sys_stand_dept" :value="scope.row.standDeptId" />
+          </template>
+        </el-table-column>
         <el-table-column prop="status" align="center" label="状态" width="100">
           <template #default="scope">
             <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -132,6 +147,18 @@
           <el-col :span="12">
             <el-form-item label="部门名称" prop="deptName">
               <el-input v-model="form.deptName" placeholder="请输入部门名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="标准科室" prop="leader">
+              <el-select v-model="form.standDeptId" placeholder="请选择标准科室">
+                <el-option
+                  v-for="dict in sys_stand_dept"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -200,7 +227,9 @@ interface DeptOptionsType {
 }
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable } = toRefs<any>(proxy?.useDict('sys_normal_disable'));
+const { sys_normal_disable, sys_stand_dept } = toRefs<any>(
+  proxy?.useDict('sys_normal_disable', 'sys_stand_dept')
+);
 
 const deptList = ref<DeptVO[]>([]);
 const loading = ref(true);

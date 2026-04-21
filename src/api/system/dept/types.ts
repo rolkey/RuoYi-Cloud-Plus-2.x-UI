@@ -4,6 +4,7 @@
 export interface DeptQuery extends PageQuery {
   deptName?: string;
   deptCategory?: string;
+  standDept?: string;
   status?: number;
 }
 
@@ -16,6 +17,7 @@ export interface DeptVO extends BaseEntity {
   parentId: number | string;
   children: DeptVO[];
   deptId: number | string;
+  standDeptId: string;
   deptName: string;
   deptCategory: string;
   orderNum: number;
@@ -49,6 +51,7 @@ export interface DeptForm {
   children?: DeptForm[];
   deptId?: number | string;
   deptName?: string;
+  standDeptId?: string;
   deptCategory?: string;
   orderNum?: number;
   leader?: string;

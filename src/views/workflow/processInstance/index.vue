@@ -10,7 +10,7 @@
             class="mt-2"
             node-key="id"
             :data="categoryOptions"
-            :props="{ label: 'label', children: 'children' } as any"
+            :props="{ label: 'label', children: 'children' }"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             highlight-current
@@ -20,7 +20,10 @@
         </el-card>
       </el-col>
       <el-col :lg="20" :xs="24">
-        <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+        <transition
+          :enter-active-class="proxy?.animate.searchAnimate.enter"
+          :leave-active-class="proxy?.animate.searchAnimate.leave"
+        >
           <div v-show="showSearch" class="mb-[10px]">
             <el-card shadow="hover">
               <el-form v-show="showSearch" ref="queryFormRef" :model="queryParams" :inline="true">
@@ -30,13 +33,25 @@
                   </el-badge>
                 </el-form-item>
                 <el-form-item label="任务名称" prop="nodeName">
-                  <el-input v-model="queryParams.nodeName" placeholder="请输入任务名称" @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.nodeName"
+                    placeholder="请输入任务名称"
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item label="流程定义名称" label-width="100" prop="flowName">
-                  <el-input v-model="queryParams.flowName" placeholder="请输入流程定义名称" @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.flowName"
+                    placeholder="请输入流程定义名称"
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item label="流程定义编码" label-width="100" prop="flowCode">
-                  <el-input v-model="queryParams.flowCode" placeholder="请输入流程定义编码" @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.flowCode"
+                    placeholder="请输入流程定义编码"
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -50,7 +65,9 @@
           <template #header>
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
+                <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+                  >删除</el-button
+                >
               </el-col>
               <right-toolbar v-model:show-search="showSearch" @query-table="handleQuery"></right-toolbar>
             </el-row>
@@ -58,24 +75,55 @@
           <el-tabs v-model="tab" @tab-click="changeTab">
             <el-tab-pane name="running" label="运行中"></el-tab-pane>
             <el-tab-pane name="finish" label="已完成"></el-tab-pane>
-            <el-table v-loading="loading" border :data="processInstanceList" @selection-change="handleSelectionChange">
+            <el-table
+              v-loading="loading"
+              border
+              :data="processInstanceList"
+              @selection-change="handleSelectionChange"
+            >
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column align="center" type="index" label="序号" width="60"></el-table-column>
-              <el-table-column :show-overflow-tooltip="true" prop="businessCode" align="center" label="业务编码"></el-table-column>
-              <el-table-column :show-overflow-tooltip="true" prop="businessTitle" align="center" label="业务标题"></el-table-column>
+              <el-table-column
+                :show-overflow-tooltip="true"
+                prop="businessCode"
+                align="center"
+                label="业务编码"
+              ></el-table-column>
+              <el-table-column
+                :show-overflow-tooltip="true"
+                prop="businessTitle"
+                align="center"
+                label="业务标题"
+              ></el-table-column>
               <el-table-column :show-overflow-tooltip="true" align="center" width="120" label="流程定义名称">
                 <template #default="scope">
                   <span>{{ scope.row.flowName }}v{{ scope.row.version }}</span>
                 </template>
               </el-table-column>
-              <el-table-column align="center" prop="flowCode" width="120" label="流程定义编码"></el-table-column>
+              <el-table-column
+                align="center"
+                prop="flowCode"
+                width="120"
+                label="流程定义编码"
+              ></el-table-column>
               <el-table-column align="center" prop="categoryName" label="流程分类"></el-table-column>
               <el-table-column align="center" prop="nodeName" label="任务名称"></el-table-column>
-              <el-table-column align="center" prop="createByName" :show-overflow-tooltip="true" label="申请人"></el-table-column>
+              <el-table-column
+                align="center"
+                prop="createByName"
+                :show-overflow-tooltip="true"
+                label="申请人"
+              ></el-table-column>
               <el-table-column align="center" prop="version" label="版本号" width="90">
                 <template #default="scope"> v{{ scope.row.version }}.0</template>
               </el-table-column>
-              <el-table-column v-if="tab === 'running'" align="center" prop="isSuspended" label="状态" min-width="70">
+              <el-table-column
+                v-if="tab === 'running'"
+                align="center"
+                prop="isSuspended"
+                label="状态"
+                min-width="70"
+              >
                 <template #default="scope">
                   <el-tag v-if="!scope.row.isSuspended" type="success">激活</el-tag>
                   <el-tag v-else type="danger">挂起</el-tag>
@@ -86,17 +134,41 @@
                   <dict-tag :options="wf_business_status" :value="scope.row.flowStatus"></dict-tag>
                 </template>
               </el-table-column>
-              <el-table-column align="center" prop="createTime" label="启动时间" width="160"></el-table-column>
-              <el-table-column v-if="tab === 'finish'" align="center" prop="updateTime" label="结束时间" width="160"></el-table-column>
+              <el-table-column
+                align="center"
+                prop="createTime"
+                label="启动时间"
+                width="160"
+              ></el-table-column>
+              <el-table-column
+                v-if="tab === 'finish'"
+                align="center"
+                prop="updateTime"
+                label="结束时间"
+                width="160"
+              ></el-table-column>
               <el-table-column label="操作" align="center" :width="165" fixed="right">
                 <template #default="scope">
                   <el-row v-if="tab === 'running'" :gutter="10" class="mb8">
                     <el-col :span="1.5">
-                      <el-popover :ref="`popoverRef${scope.$index}`" trigger="click" placement="left" :width="300">
-                        <el-input v-model="deleteReason" resize="none" :rows="3" type="textarea" placeholder="请输入作废原因" />
+                      <el-popover
+                        :ref="`popoverRef${scope.$index}`"
+                        trigger="click"
+                        placement="left"
+                        :width="300"
+                      >
+                        <el-input
+                          v-model="deleteReason"
+                          resize="none"
+                          :rows="3"
+                          type="textarea"
+                          placeholder="请输入作废原因"
+                        />
                         <div style="text-align: right; margin: 5px 0px 0px 0px">
                           <el-button size="small" text @click="cancelPopover(scope.$index)">取消</el-button>
-                          <el-button size="small" type="primary" @click="handleInvalid(scope.row)">确认</el-button>
+                          <el-button size="small" type="primary" @click="handleInvalid(scope.row)"
+                            >确认</el-button
+                          >
                         </div>
                         <template #reference>
                           <el-button type="danger" size="small" icon="CircleClose">作废</el-button>
@@ -104,15 +176,26 @@
                       </el-popover>
                     </el-col>
                     <el-col :span="1.5">
-                      <el-button type="danger" size="small" icon="Delete" @click="handleDelete(scope.row)">删除 </el-button>
+                      <el-button type="danger" size="small" icon="Delete" @click="handleDelete(scope.row)"
+                        >删除
+                      </el-button>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10" class="mb8">
                     <el-col :span="1.5">
-                      <el-button type="primary" size="small" icon="View" @click="handleView(scope.row)">查看</el-button>
+                      <el-button type="primary" size="small" icon="View" @click="handleView(scope.row)"
+                        >查看</el-button
+                      >
                     </el-col>
                     <el-col :span="1.5">
-                      <el-button type="primary" size="small" icon="Document" @click="handleInstanceVariable(scope.row)"> 变量 </el-button>
+                      <el-button
+                        type="primary"
+                        size="small"
+                        icon="Document"
+                        @click="handleInstanceVariable(scope.row)"
+                      >
+                        变量
+                      </el-button>
                     </el-col>
                   </el-row>
                 </template>
@@ -129,7 +212,12 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog v-if="processDefinitionDialog.visible" v-model="processDefinitionDialog.visible" :title="processDefinitionDialog.title" width="70%">
+    <el-dialog
+      v-if="processDefinitionDialog.visible"
+      v-model="processDefinitionDialog.visible"
+      :title="processDefinitionDialog.title"
+      width="70%"
+    >
       <el-table v-loading="loading" :data="processDefinitionHistoryList">
         <el-table-column fixed align="center" type="index" label="序号" width="60"></el-table-column>
         <el-table-column fixed align="center" prop="name" label="流程定义名称"></el-table-column>
@@ -144,11 +232,23 @@
             <el-tag v-else type="danger">挂起</el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="deploymentTime" label="部署时间" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column
+          align="center"
+          prop="deploymentTime"
+          label="部署时间"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
       </el-table>
     </el-dialog>
     <!-- 流程变量开始 -->
-    <el-dialog v-model="variableVisible" v-if="variableVisible" draggable title="流程变量" width="60%" :close-on-click-modal="false">
+    <el-dialog
+      v-model="variableVisible"
+      v-if="variableVisible"
+      draggable
+      title="流程变量"
+      width="60%"
+      :close-on-click-modal="false"
+    >
       <el-card v-loading="variableLoading">
         <template #header>
           <div class="clearfix">
@@ -178,7 +278,12 @@
     <!-- 流程变量结束 -->
 
     <!-- 申请人 -->
-    <UserSelect ref="userSelectRef" :multiple="true" :data="selectUserIds" @confirm-call-back="userSelectCallBack"></UserSelect>
+    <UserSelect
+      ref="userSelectRef"
+      :multiple="true"
+      :data="selectUserIds"
+      @confirm-call-back="userSelectCallBack"
+    ></UserSelect>
   </div>
 </template>
 

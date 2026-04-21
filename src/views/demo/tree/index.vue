@@ -1,11 +1,19 @@
 <template>
   <div class="p-2">
-    <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+    <transition
+      :enter-active-class="proxy?.animate.searchAnimate.enter"
+      :leave-active-class="proxy?.animate.searchAnimate.leave"
+    >
       <div v-show="showSearch" class="mb-[10px]">
         <el-card shadow="hover">
           <el-form ref="queryFormRef" :model="queryParams" :inline="true">
             <el-form-item label="树节点名" prop="treeName">
-              <el-input v-model="queryParams.treeName" placeholder="请输入树节点名" clearable @keyup.enter="handleQuery" />
+              <el-input
+                v-model="queryParams.treeName"
+                placeholder="请输入树节点名"
+                clearable
+                @keyup.enter="handleQuery"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -20,7 +28,9 @@
       <template #header>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button v-hasPermi="['demo:tree:add']" type="primary" plain icon="Plus" @click="handleAdd()">新增</el-button>
+            <el-button v-hasPermi="['demo:tree:add']" type="primary" plain icon="Plus" @click="handleAdd()"
+              >新增</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button type="info" plain icon="Sort" @click="handleToggleExpandAll">展开/折叠</el-button>
@@ -44,13 +54,31 @@
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
-              <el-button v-hasPermi="['demo:tree:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)" />
+              <el-button
+                v-hasPermi="['demo:tree:edit']"
+                link
+                type="primary"
+                icon="Edit"
+                @click="handleUpdate(scope.row)"
+              />
             </el-tooltip>
             <el-tooltip content="新增" placement="top">
-              <el-button v-hasPermi="['demo:tree:add']" link type="primary" icon="Plus" @click="handleAdd(scope.row)" />
+              <el-button
+                v-hasPermi="['demo:tree:add']"
+                link
+                type="primary"
+                icon="Plus"
+                @click="handleAdd(scope.row)"
+              />
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
-              <el-button v-hasPermi="['demo:tree:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)" />
+              <el-button
+                v-hasPermi="['demo:tree:remove']"
+                link
+                type="primary"
+                icon="Delete"
+                @click="handleDelete(scope.row)"
+              />
             </el-tooltip>
           </template>
         </el-table-column>
@@ -63,7 +91,7 @@
           <el-tree-select
             v-model="form.parentId"
             :data="treeOptions"
-            :props="{ value: 'id', label: 'treeName', children: 'children' } as any"
+            :props="{ value: 'id', label: 'treeName', children: 'children' }"
             value-key="id"
             placeholder="请选择父id"
             check-strictly

@@ -10,7 +10,7 @@
             class="mt-2"
             node-key="id"
             :data="deptOptions"
-            :props="{ label: 'label', children: 'children' } as any"
+            :props="{ label: 'label', children: 'children' }"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             highlight-current
@@ -20,12 +20,20 @@
         </el-card>
       </el-col>
       <el-col :lg="20" :xs="24">
-        <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+        <transition
+          :enter-active-class="proxy?.animate.searchAnimate.enter"
+          :leave-active-class="proxy?.animate.searchAnimate.leave"
+        >
           <div v-show="showSearch" class="mb-[10px]">
             <el-card shadow="hover">
               <el-form ref="queryFormRef" :model="queryParams" :inline="true">
                 <el-form-item label="岗位编码" prop="postCode">
-                  <el-input v-model="queryParams.postCode" placeholder="请输入岗位编码" clearable @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.postCode"
+                    placeholder="请输入岗位编码"
+                    clearable
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item label="类别编码" prop="postCategory">
                   <el-input
@@ -37,13 +45,18 @@
                   />
                 </el-form-item>
                 <el-form-item label="岗位名称" prop="postName">
-                  <el-input v-model="queryParams.postName" placeholder="请输入岗位名称" clearable @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.postName"
+                    placeholder="请输入岗位名称"
+                    clearable
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item label="部门" prop="deptId">
                   <el-tree-select
                     v-model="queryParams.deptId"
                     :data="deptOptions"
-                    :props="{ value: 'id', label: 'label', children: 'children' } as any"
+                    :props="{ value: 'id', label: 'label', children: 'children' }"
                     value-key="id"
                     placeholder="请选择部门"
                     check-strictly
@@ -51,7 +64,12 @@
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                   <el-select v-model="queryParams.status" placeholder="岗位状态" clearable>
-                    <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value" />
+                    <el-option
+                      v-for="dict in sys_normal_disable"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    />
                   </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -66,20 +84,47 @@
           <template #header>
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button v-hasPermi="['system:post:add']" type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
+                <el-button
+                  v-hasPermi="['system:post:add']"
+                  type="primary"
+                  plain
+                  icon="Plus"
+                  @click="handleAdd"
+                  >新增</el-button
+                >
               </el-col>
               <el-col :span="1.5">
-                <el-button v-hasPermi="['system:post:edit']" type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()"
+                <el-button
+                  v-hasPermi="['system:post:edit']"
+                  type="success"
+                  plain
+                  icon="Edit"
+                  :disabled="single"
+                  @click="handleUpdate()"
                   >修改</el-button
                 >
               </el-col>
               <el-col :span="1.5">
-                <el-button v-hasPermi="['system:post:remove']" type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()">
+                <el-button
+                  v-hasPermi="['system:post:remove']"
+                  type="danger"
+                  plain
+                  icon="Delete"
+                  :disabled="multiple"
+                  @click="handleDelete()"
+                >
                   删除
                 </el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button v-hasPermi="['system:post:export']" type="warning" plain icon="Download" @click="handleExport">导出</el-button>
+                <el-button
+                  v-hasPermi="['system:post:export']"
+                  type="warning"
+                  plain
+                  icon="Download"
+                  @click="handleExport"
+                  >导出</el-button
+                >
               </el-col>
               <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
             </el-row>
@@ -105,10 +150,22 @@
             <el-table-column label="操作" width="180" align="center" class-name="small-padding fixed-width">
               <template #default="scope">
                 <el-tooltip content="修改" placement="top">
-                  <el-button v-hasPermi="['system:post:edit']" link type="primary" icon="Edit" @click="handleUpdate(scope.row)"></el-button>
+                  <el-button
+                    v-hasPermi="['system:post:edit']"
+                    link
+                    type="primary"
+                    icon="Edit"
+                    @click="handleUpdate(scope.row)"
+                  ></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
-                  <el-button v-hasPermi="['system:post:remove']" link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
+                  <el-button
+                    v-hasPermi="['system:post:remove']"
+                    link
+                    type="primary"
+                    icon="Delete"
+                    @click="handleDelete(scope.row)"
+                  ></el-button>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -133,7 +190,7 @@
               <el-tree-select
                 v-model="form.deptId"
                 :data="deptOptions"
-                :props="{ value: 'id', label: 'label', children: 'children' } as any"
+                :props="{ value: 'id', label: 'label', children: 'children' }"
                 value-key="id"
                 placeholder="请选择部门"
                 check-strictly
@@ -150,7 +207,9 @@
             </el-form-item>
             <el-form-item label="岗位状态" prop="status">
               <el-radio-group v-model="form.status">
-                <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :value="dict.value">{{
+                  dict.label
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="备注" prop="remark">

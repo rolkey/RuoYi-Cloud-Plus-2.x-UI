@@ -70,7 +70,7 @@
           <el-tree-select
             v-model="infoForm.parentMenuId"
             :data="menuOptions"
-            :props="{ value: 'menuId', label: 'menuName', children: 'children' } as any"
+            :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
             value-key="menuId"
             node-key="menuId"
             placeholder="选择上级菜单"
@@ -112,7 +112,9 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="infoForm.genPath = '/'">恢复默认的生成基础路径</el-dropdown-item>
+                    <el-dropdown-item @click="infoForm.genPath = '/'"
+                      >恢复默认的生成基础路径</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -194,7 +196,12 @@
               </el-tooltip>
             </template>
             <el-select v-model="infoForm.subTableName" placeholder="请选择" @change="subSelectChange">
-              <el-option v-for="(t, index) in table" :key="index" :label="t.tableName + '：' + t.tableComment" :value="t.tableName"></el-option>
+              <el-option
+                v-for="(t, index) in table"
+                :key="index"
+                :label="t.tableName + '：' + t.tableComment"
+                :value="t.tableName"
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-col>

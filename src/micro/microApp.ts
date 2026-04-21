@@ -1,5 +1,5 @@
 import { loadMicroApp, MicroApp as MicroAppInstance } from 'qiankun';
-import { findMicroAppByPath, type MicroAppItem } from './appList';
+import { findMicroAppByPath } from './appList';
 import msgBus from './messageBus';
 
 const microApps: Map<string, MicroAppInstance> = new Map();

@@ -153,7 +153,7 @@
             node-key="id"
             :check-strictly="!form.menuCheckStrictly"
             empty-text="加载中，请稍候"
-            :props="{ label: 'label', children: 'children' } as any"
+            :props="{ label: 'label', children: 'children' }"
           ></el-tree>
         </el-form-item>
         <el-form-item label="备注" prop="remark">

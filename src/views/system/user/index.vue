@@ -10,7 +10,7 @@
             class="mt-2"
             node-key="id"
             :data="deptOptions"
-            :props="{ label: 'label', children: 'children' } as any"
+            :props="{ label: 'label', children: 'children' }"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             highlight-current
@@ -294,7 +294,7 @@
               <el-tree-select
                 v-model="form.deptId"
                 :data="enabledDeptOptions"
-                :props="{ value: 'id', label: 'label', children: 'children' } as any"
+                :props="{ value: 'id', label: 'label', children: 'children' }"
                 value-key="id"
                 placeholder="请选择归属部门"
                 check-strictly

@@ -74,7 +74,6 @@ function addIframe() {
 
 .hasTagsView {
   .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
     min-height: var(--min-height-value);
   }
 

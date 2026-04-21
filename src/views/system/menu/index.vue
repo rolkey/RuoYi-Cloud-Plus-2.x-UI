@@ -69,12 +69,13 @@
         :load="getChildrenList"
         :expand-change="expandMenuHandle"
       >
-        <el-table-column
-          prop="menuName"
-          label="菜单名称"
-          :show-overflow-tooltip="true"
-          width="160"
-        ></el-table-column>
+        <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="160">
+          <template #default="scope">
+            <el-tooltip class="box-item" :content="scope.row.menuId">
+              <el-text>{{ scope.row.menuName }}</el-text>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column prop="icon" label="图标" align="center" width="100">
           <template #default="scope">
             <svg-icon :icon-class="scope.row.icon" />
@@ -143,7 +144,7 @@
               <el-tree-select
                 v-model="form.parentId"
                 :data="menuOptions"
-                :props="{ value: 'menuId', label: 'menuName', children: 'children' } as any"
+                :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
                 value-key="menuId"
                 placeholder="选择上级菜单"
                 check-strictly
@@ -364,7 +365,7 @@
         :check-strictly="false"
         empty-text="加载中，请稍候"
         :default-expanded-keys="[0]"
-        :props="{ value: 'menuId', label: 'menuName', children: 'children' } as any"
+        :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
       />
       <template #footer>
         <div class="dialog-footer">

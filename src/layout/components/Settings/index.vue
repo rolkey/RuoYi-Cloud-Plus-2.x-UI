@@ -161,6 +161,7 @@ const isDark = useDark({
 });
 // 匹配菜单颜色
 watch(isDark, () => {
+  const root = document.documentElement;
   if (isDark.value) {
     settingsStore.sideTheme = SideThemeEnum.DARK;
   } else {

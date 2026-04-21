@@ -10,7 +10,7 @@
             class="mt-2"
             node-key="id"
             :data="categoryOptions"
-            :props="{ label: 'label', children: 'children' } as any"
+            :props="{ label: 'label', children: 'children' }"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             highlight-current
@@ -20,12 +20,25 @@
         </el-card>
       </el-col>
       <el-col :lg="20" :xs="24">
-        <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
+        <transition
+          :enter-active-class="proxy?.animate.searchAnimate.enter"
+          :leave-active-class="proxy?.animate.searchAnimate.leave"
+        >
           <div v-show="showSearch" class="mb-[10px]">
             <el-card shadow="hover">
-              <el-form v-show="showSearch" ref="queryFormRef" :model="queryParams" :inline="true" label-width="120px">
+              <el-form
+                v-show="showSearch"
+                ref="queryFormRef"
+                :model="queryParams"
+                :inline="true"
+                label-width="120px"
+              >
                 <el-form-item label="流程定义编码" prop="flowCode">
-                  <el-input v-model="queryParams.flowCode" placeholder="请输入流程定义编码" @keyup.enter="handleQuery" />
+                  <el-input
+                    v-model="queryParams.flowCode"
+                    placeholder="请输入流程定义编码"
+                    @keyup.enter="handleQuery"
+                  />
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -42,17 +55,34 @@
             </el-row>
           </template>
 
-          <el-table v-loading="loading" border :data="processInstanceList" @selection-change="handleSelectionChange">
+          <el-table
+            v-loading="loading"
+            border
+            :data="processInstanceList"
+            @selection-change="handleSelectionChange"
+          >
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column align="center" type="index" label="序号" width="60"></el-table-column>
             <el-table-column v-if="false" align="center" prop="id" label="id"></el-table-column>
-            <el-table-column :show-overflow-tooltip="true" prop="flowName" align="center" label="流程定义名称"> </el-table-column>
+            <el-table-column
+              :show-overflow-tooltip="true"
+              prop="flowName"
+              align="center"
+              label="流程定义名称"
+            >
+            </el-table-column>
             <el-table-column align="center" prop="flowCode" label="流程定义编码"></el-table-column>
             <el-table-column align="center" prop="categoryName" label="流程分类"></el-table-column>
             <el-table-column align="center" prop="version" label="版本号" width="90">
               <template #default="scope"> v{{ scope.row.version }}.0</template>
             </el-table-column>
-            <el-table-column v-if="tab === 'running'" align="center" prop="isSuspended" label="状态" min-width="70">
+            <el-table-column
+              v-if="tab === 'running'"
+              align="center"
+              prop="isSuspended"
+              label="状态"
+              min-width="70"
+            >
               <template #default="scope">
                 <el-tag v-if="!scope.row.isSuspended" type="success">激活</el-tag>
                 <el-tag v-else type="danger">挂起</el-tag>
@@ -67,19 +97,47 @@
             <el-table-column label="操作" align="center" width="162">
               <template #default="scope">
                 <el-row :gutter="10" class="mb8">
-                  <el-col :span="1.5" v-if="scope.row.flowStatus === 'draft' || scope.row.flowStatus === 'cancel' || scope.row.flowStatus === 'back'">
-                    <el-button type="primary" size="small" icon="Edit" @click="handleOpen(scope.row, 'update')">编辑</el-button>
+                  <el-col
+                    :span="1.5"
+                    v-if="
+                      scope.row.flowStatus === 'draft' ||
+                      scope.row.flowStatus === 'cancel' ||
+                      scope.row.flowStatus === 'back'
+                    "
+                  >
+                    <el-button
+                      type="primary"
+                      size="small"
+                      icon="Edit"
+                      @click="handleOpen(scope.row, 'update')"
+                      >编辑</el-button
+                    >
                   </el-col>
-                  <el-col :span="1.5" v-if="scope.row.flowStatus === 'draft' || scope.row.flowStatus === 'cancel' || scope.row.flowStatus === 'back'">
-                    <el-button type="primary" size="small" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+                  <el-col
+                    :span="1.5"
+                    v-if="
+                      scope.row.flowStatus === 'draft' ||
+                      scope.row.flowStatus === 'cancel' ||
+                      scope.row.flowStatus === 'back'
+                    "
+                  >
+                    <el-button type="primary" size="small" icon="Delete" @click="handleDelete(scope.row)"
+                      >删除</el-button
+                    >
                   </el-col>
                 </el-row>
                 <el-row :gutter="10" class="mb8">
                   <el-col :span="1.5">
-                    <el-button type="primary" size="small" icon="View" @click="handleOpen(scope.row, 'view')">查看</el-button>
+                    <el-button type="primary" size="small" icon="View" @click="handleOpen(scope.row, 'view')"
+                      >查看</el-button
+                    >
                   </el-col>
                   <el-col :span="1.5" v-if="scope.row.flowStatus === 'waiting'">
-                    <el-button type="primary" size="small" icon="Notification" @click="handleCancelProcessApply(scope.row.businessId)"
+                    <el-button
+                      type="primary"
+                      size="small"
+                      icon="Notification"
+                      @click="handleCancelProcessApply(scope.row.businessId)"
                       >撤销</el-button
                     >
                   </el-col>

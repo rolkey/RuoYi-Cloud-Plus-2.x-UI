@@ -21,7 +21,10 @@ export function getPost(postId: string | number): AxiosPromise<PostVO> {
 }
 
 // 获取岗位选择框列表
-export function optionselect(deptId?: number | string, postIds?: (number | string)[]): AxiosPromise<PostVO[]> {
+export function optionselect(
+  deptId?: number | string,
+  postIds?: (number | string)[]
+): AxiosPromise<PostVO[]> {
   return request({
     url: '/system/post/optionselect',
     method: 'get',

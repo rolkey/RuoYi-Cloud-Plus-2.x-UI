@@ -51,7 +51,10 @@ export function parseTime(time: any, pattern?: string) {
  */
 export const addDateRange = (params: any, dateRange: any[], propName?: string) => {
   const search = params;
-  search.params = typeof search.params === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
+  search.params =
+    typeof search.params === 'object' && search.params !== null && !Array.isArray(search.params)
+      ? search.params
+      : {};
   dateRange = Array.isArray(dateRange) ? dateRange : [];
   if (typeof propName === 'undefined') {
     search.params['beginTime'] = dateRange[0];

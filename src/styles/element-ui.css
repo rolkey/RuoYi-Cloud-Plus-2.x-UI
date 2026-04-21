@@ -1,0 +1,262 @@
+/* =========================================
+   1. 公共配置 (不涉及颜色，通用尺寸与布局)
+   ========================================= */
+:root {
+  /* 布局与尺寸 */
+  --el-tabs-header-height: 25px;
+  --el-card-padding: 5px; /* 这里覆盖了上面的10px，以你代码中最后的定义为准 */
+  --el-component-size: 26px;
+  --el-checkbox-height: 28px;
+  --el-menu-item-height: 28px;
+  --el-menu-base-level-padding: 5px;
+  --el-font-weight-primary: 400 !important;
+
+  /* 形状 */
+  --el-border-radius-base: 0;
+
+  /* 字体 (非颜色相关) */
+  --el-font-weight-primary: 400;
+}
+
+/* =========================================
+   2. 亮色主题配置 (涉及颜色)
+   ========================================= */
+:root.light {
+  --color-border-light: #d2d2d2;
+
+  /* Element Plus 覆盖色 */
+  --el-fill-color-light: #eae9e9;
+  --el-border-color-lighter: #6e6969;
+  --el-border-color: #b3b2b2;
+  --el-disabled-text-color: rgb(40, 38, 38);
+  --el-color-primary-light-9: rgb(199, 221, 248) !important;
+
+  /* 表格颜色 */
+  --table-border-color: var(--color-border-light);
+  --table-head-background-color: rgb(229, 229, 229);
+  --table-th-background-color: #cfcfcf;
+  --el-table-border: var(--color-border-light);
+  --table-th-border-color: var(--color-border-light);
+  /* --table-td-background-color: #fff; */
+  --table-td-border-color: var(--color-border-light);
+  --table-td-text-color: #333;
+
+  /* 交互状态色 */
+  --hover-color: rgb(109, 137, 113);
+}
+
+.el-button + .el-button {
+  margin-left: 3px !important;
+}
+
+/* .el-button,
+.el-button.is-round {
+  padding: 5px 10px;
+} */
+.el-dropdown .el-dropdown__caret-button {
+  width: 22px;
+  margin-left: -3px !important;
+}
+
+.el-select__wrapper {
+  min-height: 28px;
+  padding: 2px 4px;
+}
+
+.el-input__wrapper {
+  min-height: 28px;
+  padding: 2px 4px;
+}
+
+.el-form-item {
+  margin-bottom: 8px !important; /* 调整输入框间隔 */
+}
+.el-form--inline .el-form-item {
+  margin-right: 8px !important; /* 调整输入框间隔 */
+}
+.el-form-item__label {
+  padding: 0 4px 0 0; /* 调整输入框间隔 */
+}
+.el-radio {
+  margin-right: 4px; /* 调整输入框间隔 */
+}
+
+/* 设置 el-table 内部单元格的边框 =========================== */
+
+/* 1. 隐藏左边框补丁元素（这是左上角粗线的主要来源） */
+.el-table__border-left-patch {
+  display: none !important;
+}
+
+/* 2. 去除表格容器前后的伪元素 */
+.el-table--border::before,
+.el-table--border::after {
+  display: none !important;
+}
+
+/* 3. 去除内层包装器的伪元素 */
+.el-table__inner-wrapper::before,
+.el-table__inner-wrapper::after {
+  display: none !important;
+}
+
+/* 表头字体设置 */
+.el-table th {
+  /* 黑体字 */
+  font-family: '黑体', sans-serif;
+  /* color: black; */
+  text-align: center;
+  /* 覆盖背景色和边框 */
+  padding: 0 !important;
+}
+
+/* 固定列表头背景色 */
+/* .el-table-fixed-column--left.is-last-column.is-leaf.el-table__cell {
+  background-color: var(--table-head-background-color);
+} */
+
+/* 单元格通用样式 */
+.el-table .cell {
+  line-height: 15px !important;
+  padding: 0 4px !important; /* 采用参考文件的 4px，而非覆盖文件的 2px */
+}
+
+/* 表格单元格样式 */
+.el-table td {
+  padding: 2px;
+  /* background-color: var(--table-td-background-color); */
+  /* color: var(--table-td-text-color); */
+}
+
+/* 复选框列单元格内边距 */
+.el-table .el-table-column--selection .cell {
+  padding: 0 4px !important;
+}
+
+/* 斑马纹行背景色 */
+/* .el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background-color: #f0f7ff;
+} */
+
+/* 表格占位 */
+.table-card .el-card__body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* ==================== 标签页样式 ==================== */
+
+.el-tabs--card .el-tabs__item {
+  padding: 0 8px !important;
+  border: 1px solid var(--el-border-color-light) !important;
+  border-radius: 4px 4px 0 0 !important;
+  /* background-color: #ffffff; */
+}
+
+.el-tabs--card .el-tabs__item.is-active {
+  border: 1px solid var(--el-color-primary) !important;
+  /* background-color: #f0f7ff !important; */
+}
+
+.el-tabs--card .el-tabs__nav {
+  border-top: 1px solid transparent !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* 去除标签页头部底部边距 */
+.el-tabs_mb_0 .el-tabs__header {
+  margin-bottom: 0 !important;
+}
+
+/* ==================== 表单样式 ==================== */
+
+.el-form .el-form-item {
+  margin-bottom: 4px !important;
+}
+
+/* 错误状态表单项增加底部边距 */
+.el-form .el-form-item.is-error {
+  margin-bottom: 16px !important;
+}
+
+/* 行内表单项右边距 */
+.el-form--inline .el-form-item {
+  margin-right: 12px !important;
+}
+
+/* ==================== 抽屉样式 ==================== */
+
+.el-drawer .el-drawer__header {
+  margin-bottom: 8px !important;
+}
+
+/* tabs：标签页相关 */
+.el-tabs__header {
+  margin: 0 0 5px;
+}
+.el-tabs__item {
+  padding: 0 5px;
+}
+.el-tabs--top.el-tabs--border-card > .el-tabs__header .el-tabs__item:nth-child(2) {
+  padding-left: 5px;
+}
+.el-tabs--top.el-tabs--border-card > .el-tabs__header .el-tabs__item:last-child {
+  padding-right: 5px;
+}
+.el-tabs__header .el-tabs__item.is-active {
+  /* 粗体 */
+  color: #009688;
+}
+.el-tabs__active-bar {
+  background-color: #009688;
+}
+.el-card__body {
+  padding: 8px !important;
+}
+.leastA .el-card__body {
+  padding: 0px 8px !important;
+}
+.el-tabs__item.is-active:hover {
+  color: var(--hover-color) !important;
+}
+.el-tabs__item:hover {
+  color: var(--hover-color) !important;
+}
+
+/* el-card相关 */
+.el-card__header {
+  padding: 5px 5px 0 5px !important;
+}
+.el-tabs {
+  --el-tabs-header-height: 30px;
+}
+
+/* el-select相关 */
+.el-select-dropdown__item {
+  padding: 0;
+}
+.el-select-dropdown__list {
+  padding: 0;
+}
+
+.el-radio-group.custom-radio-group label {
+  margin-right: 8px;
+  height: 24px;
+}
+
+label.custom-checkbox {
+  height: 24px;
+}
+
+.el-select-dropdown .el-select-dropdown__header {
+  padding: 0 !important;
+}
+.el-select-dropdown .el-select-dropdown__footer {
+  padding: 4px !important;
+}
+
+.el-table__inner-wrapper {
+  border: 1px solid var(--el-border-color-lighter);
+}

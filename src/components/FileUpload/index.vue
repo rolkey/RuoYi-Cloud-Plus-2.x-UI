@@ -31,8 +31,16 @@
       的文件
     </div>
     <!-- 文件列表 -->
-    <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
-      <li v-for="(file, index) in fileList" :key="file.uid" class="el-upload-list__item ele-upload-list__item-content">
+    <transition-group
+      class="upload-file-list el-upload-list el-upload-list--text"
+      name="el-fade-in-linear"
+      tag="ul"
+    >
+      <li
+        v-for="(file, index) in fileList"
+        :key="file.uid"
+        class="el-upload-list__item ele-upload-list__item-content"
+      >
         <el-link :href="`${file.url}`" :underline="false" target="_blank">
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </el-link>
@@ -86,7 +94,7 @@ const fileAccept = computed(() => props.fileType.map((type) => `.${type}`).join(
 watch(
   () => props.modelValue,
   async (val) => {
-    if (val) {
+    if (val && (typeof val === 'string' || typeof val === 'number')) {
       let temp = 1;
       // 首先将值转为数组
       let list: any[] = [];

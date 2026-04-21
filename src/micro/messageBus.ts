@@ -8,6 +8,7 @@ import { useSettingsStore } from '@/store/modules/settings';
 import { useDictStore } from '@/store/modules/dict';
 import { getToken } from '@/utils/auth';
 import router from '@/router';
+import { globalHeaders } from '@/utils/request';
 
 interface MessageBusEvents {
   m_request: any;
@@ -30,6 +31,7 @@ class MessageBus implements Emitter<MessageBusEvents> {
   useDictStore = () => useDictStore();
   settingsStore = () => useSettingsStore();
   getToken = () => getToken();
+  globalHeaders = () => globalHeaders();
 
   all = this.emitter.all;
 

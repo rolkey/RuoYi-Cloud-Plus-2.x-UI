@@ -33,6 +33,7 @@ router.beforeEach(async (to, from, next) => {
       if (useUserStore().roles.length === 0) {
         isRelogin.show = true;
         // 判断当前用户是否已拉取完user_info信息
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const [err] = await tos(useUserStore().getInfo());
         if (err) {
           await useUserStore().logout();

@@ -399,6 +399,42 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
+            <el-form-item label="所属一级租户" prop="parentTenantId">
+              <el-tree-select
+                v-model="form.parentTenantId"
+                :data="tenantTree"
+                :props="{ value: 'tenantId', label: 'companyName', children: 'children' }"
+                placeholder="请选择所属一级租户"
+                clearable
+                style="width: 100%"
+                check-strictly
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
+            <el-form-item label="关联租户">
+              <el-select
+                v-model="form.tenantIds"
+                filterable
+                multiple
+                placeholder="请选择关联的二级租户"
+                clearable
+              >
+                <el-option
+                  v-for="item in tenantOptions"
+                  :key="item.tenantId"
+                  :label="item.companyName"
+                  :value="item.tenantId"
+                  :disabled="item.status == '1'"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
@@ -469,6 +505,8 @@ import { to } from 'await-to-js';
 import { optionselect } from '@/api/system/post';
 import { checkPermi } from '@/utils/permission';
 import { useUserStore } from '@/store/modules/user';
+import { listTenant, listTenantTree } from '@/api/system/tenant';
+import type { TenantVO } from '@/api/system/tenant/types';
 
 const router = useRouter();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -486,6 +524,8 @@ const dateRange = ref<[DateModelType, DateModelType]>(['', '']);
 const deptName = ref('');
 const deptOptions = ref<DeptTreeVO[]>([]);
 const enabledDeptOptions = ref<DeptTreeVO[]>([]);
+const tenantOptions = ref<TenantVO[]>([]);
+const tenantTree = ref<TenantVO[]>([]);
 const initPassword = ref<string>('');
 const postOptions = ref<PostVO[]>([]);
 const roleOptions = ref<RoleVO[]>([]);
@@ -539,7 +579,9 @@ const initFormData: UserForm = {
   remark: '',
   postIds: [],
   roleIds: [],
-  deptIds: []
+  deptIds: [],
+  tenantIds: [],
+  parentTenantId: undefined
 };
 
 const initData: PageData<UserForm, UserQuery> = {
@@ -588,7 +630,8 @@ const initData: PageData<UserForm, UserQuery> = {
         trigger: 'blur'
       }
     ],
-    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }]
+    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }],
+    parentTenantId: [{ required: true, message: '所属一级租户不能为空', trigger: 'change' }]
   }
 };
 const data = reactive<PageData<UserForm, UserQuery>>(initData);
@@ -624,6 +667,18 @@ const getDeptTree = async () => {
   const res = await api.deptTreeSelect();
   deptOptions.value = res.data;
   enabledDeptOptions.value = filterDisabledDept(res.data);
+};
+
+/** 加载租户列表 */
+const getTenantList = async () => {
+  const res = await listTenant({ pageNum: 1, pageSize: 1000 } as any);
+  tenantOptions.value = res.rows || res.data || [];
+};
+
+/** 查询租户树（用于选择上级租户） */
+const getTenantTree = async () => {
+  const res = await listTenantTree();
+  tenantTree.value = res.data;
 };
 
 /** 过滤禁用的部门 */
@@ -783,6 +838,7 @@ const handleAdd = async () => {
   postOptions.value = data.posts;
   roleOptions.value = data.roles;
   form.value.password = initPassword.value.toString();
+  await getTenantTree();
 };
 
 /** 修改按钮操作 */
@@ -800,7 +856,10 @@ const handleUpdate = async (row?: UserForm) => {
   form.value.postIds = data.postIds;
   form.value.roleIds = data.roleIds;
   form.value.deptIds = data.deptIds || [];
+  form.value.tenantIds = data.tenantIds || [];
+  form.value.parentTenantId = data.parentTenantId;
   form.value.password = '';
+  await getTenantTree();
 };
 
 /** 提交按钮 */
@@ -813,6 +872,8 @@ const submitForm = () => {
           form.value.roleIds = null;
           form.value.deptId = null;
           form.value.postIds = null;
+          form.value.deptIds = null;
+          form.value.tenantIds = null;
         }
         await api.updateUser(form.value);
       } else {
@@ -845,6 +906,7 @@ const resetForm = () => {
 };
 onMounted(() => {
   getDeptTree(); // 初始化部门数据
+  getTenantList(); // 初始化租户数据
   getList(); // 初始化列表数据
   proxy?.getConfigKey('sys.user.initPassword').then((response) => {
     initPassword.value = response.data;

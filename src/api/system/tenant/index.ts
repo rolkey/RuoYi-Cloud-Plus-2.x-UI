@@ -95,6 +95,14 @@ export function syncTenantPackage(tenantId: string | number, packageId: string |
   });
 }
 
+// 查询租户树
+export function listTenantTree(): AxiosPromise<TenantVO[]> {
+  return request({
+    url: `/${system()}/tenant/tree`,
+    method: 'get'
+  });
+}
+
 // 同步租户字典
 export function syncTenantDict() {
   return request({

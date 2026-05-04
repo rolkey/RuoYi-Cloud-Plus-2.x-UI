@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', () => {
   const nickname = ref('');
   const userId = ref<string | number>('');
   const tenantId = ref<string>('');
+  const tenantIds = ref<string[]>([]);
   const avatar = ref('');
   const roles = ref<Array<string>>([]); // 用户角色编码集合 → 判断路由权限
   const permissions = ref<Array<string>>([]); // 用户权限编码集合 → 判断按钮权限
@@ -52,6 +53,7 @@ export const useUserStore = defineStore('user', () => {
       avatar.value = profile;
       userId.value = user.userId;
       tenantId.value = user.tenantId;
+      tenantIds.value = user.tenantIds || [];
       return Promise.resolve();
     }
     return Promise.reject(err);
@@ -63,6 +65,7 @@ export const useUserStore = defineStore('user', () => {
     token.value = '';
     roles.value = [];
     permissions.value = [];
+    tenantIds.value = [];
     removeToken();
   };
 
@@ -73,6 +76,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     userId,
     tenantId,
+    tenantIds,
     token,
     nickname,
     avatar,

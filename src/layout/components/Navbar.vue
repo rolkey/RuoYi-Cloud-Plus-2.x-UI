@@ -12,7 +12,7 @@
     <div class="right-menu flex align-center">
       <template v-if="appStore.device !== 'mobile'">
         <el-select
-          v-if="userId === 1 && tenantEnabled"
+          v-if="tenantEnabled && tenantList.length > 1"
           v-model="companyName"
           class="min-w-244px"
           clearable
@@ -127,7 +127,6 @@ const newNotice = ref(<number>0);
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const userId = ref(userStore.userId);
 const companyName = ref(undefined);
 const tenantList = ref<TenantVO[]>([]);
 // 是否切换了租户
@@ -166,6 +165,13 @@ const initTenantList = async () => {
   tenantEnabled.value = data.tenantEnabled === undefined ? true : data.tenantEnabled;
   if (tenantEnabled.value) {
     tenantList.value = data.voList;
+    // 仅保留用户有权限的租户
+    const accessibleTenantIds = userStore.tenantIds;
+    if (accessibleTenantIds && accessibleTenantIds.length > 0) {
+      tenantList.value = tenantList.value.filter((t: TenantVO) =>
+        accessibleTenantIds.includes(String(t.tenantId))
+      );
+    }
   }
 };
 

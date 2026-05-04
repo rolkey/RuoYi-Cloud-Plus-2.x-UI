@@ -13,6 +13,7 @@ export interface TenantVO extends BaseEntity {
   packageId: string | number;
   expireTime: string;
   accountCount: number;
+  parentTenantId: number | string | undefined;
   status: string;
 }
 
@@ -24,6 +25,8 @@ export interface TenantQuery extends PageQuery {
   contactPhone: string;
 
   companyName: string;
+
+  parentTenantId: number | string | undefined;
 }
 
 export interface TenantForm {
@@ -42,5 +45,6 @@ export interface TenantForm {
   packageId: string | number;
   expireTime: string;
   accountCount: number;
+  parentTenantId: number | string | undefined;
   status: string;
 }

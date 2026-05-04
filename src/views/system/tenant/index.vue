@@ -222,6 +222,17 @@
         <el-form-item label="用户数量" prop="accountCount">
           <el-input v-model="form.accountCount" placeholder="请输入用户数量" />
         </el-form-item>
+        <el-form-item label="上级租户" prop="parentTenantId">
+          <el-tree-select
+            v-model="form.parentTenantId"
+            :data="tenantTree"
+            :props="{ value: 'id', label: 'companyName', children: 'children' }"
+            placeholder="请选择上级租户（留空为顶级租户）"
+            clearable
+            style="width: 100%"
+            check-strictly
+          />
+        </el-form-item>
         <el-form-item label="绑定域名" prop="domain">
           <el-input v-model="form.domain" placeholder="请输入绑定域名" />
         </el-form-item>
@@ -251,6 +262,7 @@
 <script setup name="Tenant" lang="ts">
 import {
   listTenant,
+  listTenantTree,
   getTenant,
   delTenant,
   addTenant,
@@ -270,6 +282,7 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const userStore = useUserStore();
 const userId = ref(userStore.userId);
 const tenantList = ref<TenantVO[]>([]);
+const tenantTree = ref<TenantVO[]>([]);
 const packageList = ref<TenantPkgVO[]>([]);
 const buttonLoading = ref(false);
 const loading = ref(true);
@@ -290,6 +303,7 @@ const dialog = reactive<DialogOption>({
 const initFormData: TenantForm = {
   id: undefined,
   tenantId: undefined,
+  parentTenantId: undefined,
   contactUserName: '',
   contactPhone: '',
   username: '',
@@ -338,6 +352,12 @@ const { queryParams, form, rules } = toRefs(data);
 const getTenantPackage = async () => {
   const res = await selectTenantPackage();
   packageList.value = res.data;
+};
+
+/** 查询租户树 */
+const getTenantTree = async () => {
+  const res = await listTenantTree();
+  tenantTree.value = res.data;
 };
 
 /** 查询租户列表 */
@@ -396,6 +416,7 @@ const handleSelectionChange = (selection: TenantVO[]) => {
 const handleAdd = () => {
   reset();
   getTenantPackage();
+  getTenantTree();
   dialog.visible = true;
   dialog.title = '添加分院';
 };
@@ -404,6 +425,7 @@ const handleAdd = () => {
 const handleUpdate = async (row?: TenantVO) => {
   reset();
   await getTenantPackage();
+  await getTenantTree();
   const _id = row?.id || ids.value[0];
   const res = await getTenant(_id);
   Object.assign(form.value, res.data);

@@ -236,6 +236,30 @@ export const updateUserDepts = (userId: string | number, deptIds: number[]) => {
   });
 };
 
+/**
+ * 获取用户关联租户ID列表
+ * @param userId 用户ID
+ */
+export const getUserTenants = (userId: string | number): AxiosPromise<string[]> => {
+  return request({
+    url: `/${system()}/user/${userId}/tenants`,
+    method: 'get'
+  });
+};
+
+/**
+ * 更新用户关联租户
+ * @param userId 用户ID
+ * @param tenantIds 关联租户ID列表
+ */
+export const updateUserTenants = (userId: string | number, tenantIds: string[]) => {
+  return request({
+    url: `/${system()}/user/${userId}/tenants`,
+    method: 'put',
+    data: tenantIds
+  });
+};
+
 export default {
   listUser,
   getUser,
@@ -254,5 +278,7 @@ export default {
   deptTreeSelect,
   listUserByDeptId,
   getUserDepts,
-  updateUserDepts
+  updateUserDepts,
+  getUserTenants,
+  updateUserTenants
 };

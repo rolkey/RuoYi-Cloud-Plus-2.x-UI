@@ -667,10 +667,10 @@ const getDeptTree = async () => {
   enabledDeptOptions.value = filterDisabledDept(res.data);
 };
 
-/** 加载医院列表 */
+/** 加载下级医院列表 */
 const getTenantList = async () => {
-  const res = await listTenant({ pageNum: 1, pageSize: 1000 } as any);
-  tenantOptions.value = res.rows || res.data || [];
+  const res = await listTenantTree();
+  tenantOptions.value = res.data || [];
 };
 
 /** 查询医院树（用于选择上级医院） */
@@ -836,6 +836,7 @@ const handleAdd = async () => {
   postOptions.value = data.posts;
   roleOptions.value = data.roles;
   form.value.password = initPassword.value.toString();
+  form.value.tenantIds = [];
   await getTenantTree();
 };
 
@@ -854,10 +855,11 @@ const handleUpdate = async (row?: UserForm) => {
   form.value.postIds = data.postIds;
   form.value.roleIds = data.roleIds;
   form.value.deptIds = data.deptIds || [];
+  form.value.password = '';
+  // 先加载选项数据，再赋值 tenantIds 确保下拉选项先就绪
+  await getTenantTree();
   form.value.tenantIds = data.tenantIds || [];
   // form.value.parentTenantId = data.parentTenantId;
-  form.value.password = '';
-  await getTenantTree();
 };
 
 /** 提交按钮 */

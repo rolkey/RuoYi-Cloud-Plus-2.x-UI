@@ -103,7 +103,15 @@
         </el-row>
       </template>
 
-      <el-table v-loading="loading" border :data="tenantList" @selection-change="handleSelectionChange">
+      <el-table
+        v-loading="loading"
+        border
+        :data="tenantTreeList"
+        row-key="id"
+        default-expand-all
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column v-if="false" label="id" align="center" prop="id" />
         <el-table-column label="医院编号" align="center" prop="tenantId" />
@@ -174,14 +182,6 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <pagination
-        v-show="total > 0"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        :total="total"
-        @pagination="getList"
-      />
     </el-card>
 
     <!-- 添加或修改医院对话框 -->
@@ -232,15 +232,19 @@
           <el-input v-model="form.accountCount" placeholder="请输入用户数量" />
         </el-form-item>
         <el-form-item label="上级医院" prop="parentTenantId">
-          <el-tree-select
+          <el-select
             v-model="form.parentTenantId"
-            :data="tenantTree"
-            :props="{ value: 'id', label: 'companyName', children: 'children' }"
             placeholder="请选择上级医院（留空为顶级医院）"
             clearable
             style="width: 100%"
-            check-strictly
-          />
+          >
+            <el-option
+              v-for="item in tenantOptions"
+              :key="item.id"
+              :label="item.companyName"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="绑定域名" prop="domain">
           <el-input v-model="form.domain" placeholder="请输入绑定域名" />
@@ -271,7 +275,7 @@
 <script setup name="Tenant" lang="ts">
 import {
   listTenant,
-  listTenantTree,
+  listTenantTreeAll,
   getTenant,
   delTenant,
   addTenant,
@@ -290,8 +294,8 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const userStore = useUserStore();
 const userId = ref(userStore.userId);
-const tenantList = ref<TenantVO[]>([]);
-const tenantTree = ref<TenantVO[]>([]);
+const tenantTreeList = ref<TenantVO[]>([]);
+const tenantOptions = ref<TenantVO[]>([]);
 const packageList = ref<TenantPkgVO[]>([]);
 const buttonLoading = ref(false);
 const loading = ref(true);
@@ -364,18 +368,17 @@ const getTenantPackage = async () => {
   packageList.value = res.data;
 };
 
-/** 查询医院树 */
-const getTenantTree = async () => {
-  const res = await listTenantTree();
-  tenantTree.value = res.data;
+/** 查询医院列表（用于上级医院选择） */
+const getTenantOptions = async () => {
+  const res = await listTenant({ pageNum: 1, pageSize: 1000 } as any);
+  tenantOptions.value = res.rows || res.data || [];
 };
 
-/** 查询医院列表 */
+/** 查询医院树形列表 */
 const getList = async () => {
   loading.value = true;
-  const res = await listTenant(queryParams.value);
-  tenantList.value = res.rows;
-  total.value = res.total;
+  const res = await listTenantTreeAll();
+  tenantTreeList.value = res.data;
   loading.value = false;
 };
 
@@ -405,7 +408,6 @@ const reset = () => {
 
 /** 搜索按钮操作 */
 const handleQuery = () => {
-  queryParams.value.pageNum = 1;
   getList();
 };
 
@@ -426,7 +428,7 @@ const handleSelectionChange = (selection: TenantVO[]) => {
 const handleAdd = () => {
   reset();
   getTenantPackage();
-  getTenantTree();
+  getTenantOptions();
   dialog.visible = true;
   dialog.title = '添加医院';
 };
@@ -435,7 +437,7 @@ const handleAdd = () => {
 const handleAddChild = async (row: TenantVO) => {
   reset();
   await getTenantPackage();
-  await getTenantTree();
+  await getTenantOptions();
   form.value.parentTenantId = row.id;
   dialog.visible = true;
   dialog.title = '添加医院';
@@ -445,7 +447,7 @@ const handleAddChild = async (row: TenantVO) => {
 const handleUpdate = async (row?: TenantVO) => {
   reset();
   await getTenantPackage();
-  await getTenantTree();
+  await getTenantOptions();
   const _id = row?.id || ids.value[0];
   const res = await getTenant(_id);
   Object.assign(form.value, res.data);

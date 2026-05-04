@@ -95,7 +95,15 @@ export function syncTenantPackage(tenantId: string | number, packageId: string |
   });
 }
 
-// 查询医院树
+// 查询所有医院树
+export function listTenantTreeAll(): AxiosPromise<TenantVO[]> {
+  return request({
+    url: `/${system()}/tenant/treeAll`,
+    method: 'get'
+  });
+}
+
+// 查询当前医院下级医院列表
 export function listTenantTree(): AxiosPromise<TenantVO[]> {
   return request({
     url: `/${system()}/tenant/tree`,

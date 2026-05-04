@@ -371,6 +371,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
+            <el-form-item label="权限科室">
+              <el-tree-select
+                v-model="form.deptIds"
+                :data="enabledDeptOptions"
+                :props="{ value: 'id', label: 'label', children: 'children' }"
+                value-key="id"
+                placeholder="请选择权限科室（多选）"
+                multiple
+                check-strictly
+                clearable
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
             <el-form-item label="角色" prop="roleIds">
               <el-select v-model="form.roleIds" filterable multiple placeholder="请选择">
                 <el-option
@@ -524,7 +538,8 @@ const initFormData: UserForm = {
   status: '0',
   remark: '',
   postIds: [],
-  roleIds: []
+  roleIds: [],
+  deptIds: []
 };
 
 const initData: PageData<UserForm, UserQuery> = {
@@ -784,6 +799,7 @@ const handleUpdate = async (row?: UserForm) => {
   );
   form.value.postIds = data.postIds;
   form.value.roleIds = data.roleIds;
+  form.value.deptIds = data.deptIds || [];
   form.value.password = '';
 };
 

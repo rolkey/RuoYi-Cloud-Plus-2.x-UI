@@ -67,6 +67,7 @@ export interface UserForm {
   remark?: string;
   postIds: string[];
   roleIds: string[];
+  deptIds: number[];
 }
 
 export interface UserInfoVO {
@@ -75,6 +76,7 @@ export interface UserInfoVO {
   roleIds: string[];
   posts: PostVO[];
   postIds: string[];
+  deptIds: number[];
   roleGroup: string;
   postGroup: string;
 }

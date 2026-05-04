@@ -1,11 +1,14 @@
 import request from '@/utils/request';
 import { TenantForm, TenantQuery, TenantVO } from './types';
 import { AxiosPromise } from 'axios';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
 
 // 查询租户列表
 export function listTenant(query: TenantQuery): AxiosPromise<TenantVO[]> {
   return request({
-    url: '/system/tenant/list',
+    url: `/${system()}/tenant/list`,
     method: 'get',
     params: query
   });
@@ -14,7 +17,7 @@ export function listTenant(query: TenantQuery): AxiosPromise<TenantVO[]> {
 // 查询租户详细
 export function getTenant(id: string | number): AxiosPromise<TenantVO> {
   return request({
-    url: '/system/tenant/' + id,
+    url: `/${system()}/tenant/${id}`,
     method: 'get'
   });
 }
@@ -22,7 +25,7 @@ export function getTenant(id: string | number): AxiosPromise<TenantVO> {
 // 新增租户
 export function addTenant(data: TenantForm) {
   return request({
-    url: '/system/tenant',
+    url: `/${system()}/tenant`,
     method: 'post',
     headers: {
       isEncrypt: true,
@@ -35,7 +38,7 @@ export function addTenant(data: TenantForm) {
 // 修改租户
 export function updateTenant(data: TenantForm) {
   return request({
-    url: '/system/tenant',
+    url: `/${system()}/tenant`,
     method: 'put',
     data: data
   });
@@ -49,7 +52,7 @@ export function changeTenantStatus(id: string | number, tenantId: string | numbe
     status
   };
   return request({
-    url: '/system/tenant/changeStatus',
+    url: `/${system()}/tenant/changeStatus`,
     method: 'put',
     data: data
   });
@@ -58,7 +61,7 @@ export function changeTenantStatus(id: string | number, tenantId: string | numbe
 // 删除租户
 export function delTenant(id: string | number | Array<string | number>) {
   return request({
-    url: '/system/tenant/' + id,
+    url: `/${system()}/tenant/${id}`,
     method: 'delete'
   });
 }
@@ -66,7 +69,7 @@ export function delTenant(id: string | number | Array<string | number>) {
 // 动态切换租户
 export function dynamicTenant(tenantId: string | number) {
   return request({
-    url: '/system/tenant/dynamic/' + tenantId,
+    url: `/${system()}/tenant/dynamic/${tenantId}`,
     method: 'get'
   });
 }
@@ -74,7 +77,7 @@ export function dynamicTenant(tenantId: string | number) {
 // 清除动态租户
 export function dynamicClear() {
   return request({
-    url: '/system/tenant/dynamic/clear',
+    url: `/${system()}/tenant/dynamic/clear`,
     method: 'get'
   });
 }
@@ -86,7 +89,7 @@ export function syncTenantPackage(tenantId: string | number, packageId: string |
     packageId
   };
   return request({
-    url: '/system/tenant/syncTenantPackage',
+    url: `/${system()}/tenant/syncTenantPackage`,
     method: 'get',
     params: data
   });
@@ -95,7 +98,7 @@ export function syncTenantPackage(tenantId: string | number, packageId: string |
 // 同步租户字典
 export function syncTenantDict() {
   return request({
-    url: '/system/tenant/syncTenantDict',
+    url: `/${system()}/tenant/syncTenantDict`,
     method: 'get'
   });
 }
@@ -103,7 +106,7 @@ export function syncTenantDict() {
 // 同步租户字典
 export function syncTenantConfig() {
   return request({
-    url: '/system/tenant/syncTenantConfig',
+    url: `/${system()}/tenant/syncTenantConfig`,
     method: 'get'
   });
 }

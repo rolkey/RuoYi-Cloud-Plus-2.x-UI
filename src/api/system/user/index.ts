@@ -4,6 +4,9 @@ import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { UserForm, UserQuery, UserVO, UserInfoVO } from './types';
 import { parseStrEmpty } from '@/utils/ruoyi';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
 
 /**
  * 查询用户列表
@@ -11,7 +14,7 @@ import { parseStrEmpty } from '@/utils/ruoyi';
  */
 export const listUser = (query: UserQuery): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/system/user/list',
+    url: `/${system()}/user/list`,
     method: 'get',
     params: query
   });
@@ -23,7 +26,7 @@ export const listUser = (query: UserQuery): AxiosPromise<UserVO[]> => {
  */
 export const optionSelect = (userIds: (number | string)[]): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/system/user/optionselect?userIds=' + userIds,
+    url: `/${system()}/user/optionselect?userIds=${userIds}`,
     method: 'get'
   });
 };
@@ -34,7 +37,7 @@ export const optionSelect = (userIds: (number | string)[]): AxiosPromise<UserVO[
  */
 export const getUser = (userId?: string | number): AxiosPromise<UserInfoVO> => {
   return request({
-    url: '/system/user/' + parseStrEmpty(userId),
+    url: `/${system()}/user/${parseStrEmpty(userId)}`,
     method: 'get'
   });
 };
@@ -44,7 +47,7 @@ export const getUser = (userId?: string | number): AxiosPromise<UserInfoVO> => {
  */
 export const addUser = (data: UserForm) => {
   return request({
-    url: '/system/user',
+    url: `/${system()}/user`,
     method: 'post',
     data: data
   });
@@ -55,7 +58,7 @@ export const addUser = (data: UserForm) => {
  */
 export const updateUser = (data: UserForm) => {
   return request({
-    url: '/system/user',
+    url: `/${system()}/user`,
     method: 'put',
     data: data
   });
@@ -67,7 +70,7 @@ export const updateUser = (data: UserForm) => {
  */
 export const delUser = (userId: Array<string | number> | string | number) => {
   return request({
-    url: '/system/user/' + userId,
+    url: `/${system()}/user/${userId}`,
     method: 'delete'
   });
 };
@@ -83,7 +86,7 @@ export const resetUserPwd = (userId: string | number, password: string) => {
     password
   };
   return request({
-    url: '/system/user/resetPwd',
+    url: `/${system()}/user/resetPwd`,
     method: 'put',
     headers: {
       isEncrypt: true,
@@ -104,7 +107,7 @@ export const changeUserStatus = (userId: number | string, status: string) => {
     status
   };
   return request({
-    url: '/system/user/changeStatus',
+    url: `/${system()}/user/changeStatus`,
     method: 'put',
     data: data
   });
@@ -115,7 +118,7 @@ export const changeUserStatus = (userId: number | string, status: string) => {
  */
 export const getUserProfile = (): AxiosPromise<UserInfoVO> => {
   return request({
-    url: '/system/user/profile',
+    url: `/${system()}/user/profile`,
     method: 'get'
   });
 };
@@ -126,7 +129,7 @@ export const getUserProfile = (): AxiosPromise<UserInfoVO> => {
  */
 export const updateUserProfile = (data: UserForm) => {
   return request({
-    url: '/system/user/profile',
+    url: `/${system()}/user/profile`,
     method: 'put',
     data: data
   });
@@ -143,7 +146,7 @@ export const updateUserPwd = (oldPassword: string, newPassword: string) => {
     newPassword
   };
   return request({
-    url: '/system/user/profile/updatePwd',
+    url: `/${system()}/user/profile/updatePwd`,
     method: 'put',
     headers: {
       isEncrypt: true,
@@ -159,7 +162,7 @@ export const updateUserPwd = (oldPassword: string, newPassword: string) => {
  */
 export const uploadAvatar = (data: FormData) => {
   return request({
-    url: '/system/user/profile/avatar',
+    url: `/${system()}/user/profile/avatar`,
     method: 'post',
     data: data
   });
@@ -171,7 +174,7 @@ export const uploadAvatar = (data: FormData) => {
  */
 export const getAuthRole = (userId: string | number): AxiosPromise<{ user: UserVO; roles: RoleVO[] }> => {
   return request({
-    url: '/system/user/authRole/' + userId,
+    url: `/${system()}/user/authRole/${userId}`,
     method: 'get'
   });
 };
@@ -182,7 +185,7 @@ export const getAuthRole = (userId: string | number): AxiosPromise<{ user: UserV
  */
 export const updateAuthRole = (data: { userId: string; roleIds: string }) => {
   return request({
-    url: '/system/user/authRole',
+    url: `/${system()}/user/authRole`,
     method: 'put',
     params: data
   });
@@ -194,7 +197,7 @@ export const updateAuthRole = (data: { userId: string; roleIds: string }) => {
  */
 export const listUserByDeptId = (deptId: string | number): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/system/user/list/dept/' + deptId,
+    url: `/${system()}/user/list/dept/${deptId}`,
     method: 'get'
   });
 };
@@ -204,8 +207,32 @@ export const listUserByDeptId = (deptId: string | number): AxiosPromise<UserVO[]
  */
 export const deptTreeSelect = (): AxiosPromise<DeptTreeVO[]> => {
   return request({
-    url: '/system/user/deptTree',
+    url: `/${system()}/user/deptTree`,
     method: 'get'
+  });
+};
+
+/**
+ * 获取用户关联科室ID列表
+ * @param userId 用户ID
+ */
+export const getUserDepts = (userId: string | number): AxiosPromise<number[]> => {
+  return request({
+    url: `/${system()}/user/${userId}/depts`,
+    method: 'get'
+  });
+};
+
+/**
+ * 更新用户关联科室
+ * @param userId 用户ID
+ * @param deptIds 关联科室ID列表
+ */
+export const updateUserDepts = (userId: string | number, deptIds: number[]) => {
+  return request({
+    url: `/${system()}/user/${userId}/depts`,
+    method: 'put',
+    data: deptIds
   });
 };
 
@@ -225,5 +252,7 @@ export default {
   getAuthRole,
   updateAuthRole,
   deptTreeSelect,
-  listUserByDeptId
+  listUserByDeptId,
+  getUserDepts,
+  updateUserDepts
 };

@@ -3,10 +3,13 @@ import { UserQuery } from '@/api/system/user/types';
 import { AxiosPromise } from 'axios';
 import { RoleQuery, RoleVO, RoleDeptTree } from './types';
 import request from '@/utils/request';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
 
 export const listRole = (query: RoleQuery): AxiosPromise<RoleVO[]> => {
   return request({
-    url: '/system/role/list',
+    url: `/${system()}/role/list`,
     method: 'get',
     params: query
   });
@@ -18,7 +21,7 @@ export const listRole = (query: RoleQuery): AxiosPromise<RoleVO[]> => {
  */
 export const optionSelect = (roleIds: (number | string)[]): AxiosPromise<RoleVO[]> => {
   return request({
-    url: '/system/role/optionselect?roleIds=' + roleIds,
+    url: `/${system()}/role/optionselect?roleIds=${roleIds}`,
     method: 'get'
   });
 };
@@ -28,7 +31,7 @@ export const optionSelect = (roleIds: (number | string)[]): AxiosPromise<RoleVO[
  */
 export const getRole = (roleId: string | number): AxiosPromise<RoleVO> => {
   return request({
-    url: '/system/role/' + roleId,
+    url: `/${system()}/role/${roleId}`,
     method: 'get'
   });
 };
@@ -38,7 +41,7 @@ export const getRole = (roleId: string | number): AxiosPromise<RoleVO> => {
  */
 export const addRole = (data: any) => {
   return request({
-    url: '/system/role',
+    url: `/${system()}/role`,
     method: 'post',
     data: data
   });
@@ -50,7 +53,7 @@ export const addRole = (data: any) => {
  */
 export const updateRole = (data: any) => {
   return request({
-    url: '/system/role',
+    url: `/${system()}/role`,
     method: 'put',
     data: data
   });
@@ -61,7 +64,7 @@ export const updateRole = (data: any) => {
  */
 export const dataScope = (data: any) => {
   return request({
-    url: '/system/role/dataScope',
+    url: `/${system()}/role/dataScope`,
     method: 'put',
     data: data
   });
@@ -76,7 +79,7 @@ export const changeRoleStatus = (roleId: string | number, status: string) => {
     status
   };
   return request({
-    url: '/system/role/changeStatus',
+    url: `/${system()}/role/changeStatus`,
     method: 'put',
     data: data
   });
@@ -87,7 +90,7 @@ export const changeRoleStatus = (roleId: string | number, status: string) => {
  */
 export const delRole = (roleId: Array<string | number> | string | number) => {
   return request({
-    url: '/system/role/' + roleId,
+    url: `/${system()}/role/${roleId}`,
     method: 'delete'
   });
 };
@@ -97,7 +100,7 @@ export const delRole = (roleId: Array<string | number> | string | number) => {
  */
 export const allocatedUserList = (query: UserQuery): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/system/role/authUser/allocatedList',
+    url: `/${system()}/role/authUser/allocatedList`,
     method: 'get',
     params: query
   });
@@ -108,7 +111,7 @@ export const allocatedUserList = (query: UserQuery): AxiosPromise<UserVO[]> => {
  */
 export const unallocatedUserList = (query: UserQuery): AxiosPromise<UserVO[]> => {
   return request({
-    url: '/system/role/authUser/unallocatedList',
+    url: `/${system()}/role/authUser/unallocatedList`,
     method: 'get',
     params: query
   });
@@ -119,7 +122,7 @@ export const unallocatedUserList = (query: UserQuery): AxiosPromise<UserVO[]> =>
  */
 export const authUserCancel = (data: any) => {
   return request({
-    url: '/system/role/authUser/cancel',
+    url: `/${system()}/role/authUser/cancel`,
     method: 'put',
     data: data
   });
@@ -130,7 +133,7 @@ export const authUserCancel = (data: any) => {
  */
 export const authUserCancelAll = (data: any) => {
   return request({
-    url: '/system/role/authUser/cancelAll',
+    url: `/${system()}/role/authUser/cancelAll`,
     method: 'put',
     params: data
   });
@@ -141,15 +144,16 @@ export const authUserCancelAll = (data: any) => {
  */
 export const authUserSelectAll = (data: any) => {
   return request({
-    url: '/system/role/authUser/selectAll',
+    url: `/${system()}/role/authUser/selectAll`,
     method: 'put',
     params: data
   });
 };
+
 // 根据角色ID查询部门树结构
 export const deptTreeSelect = (roleId: string | number): AxiosPromise<RoleDeptTree> => {
   return request({
-    url: '/system/role/deptTree/' + roleId,
+    url: `/${system()}/role/deptTree/${roleId}`,
     method: 'get'
   });
 };

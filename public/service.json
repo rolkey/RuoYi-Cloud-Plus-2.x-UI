@@ -1,8 +1,8 @@
 {
     "development": {
-        "auth": "auth",
-        "tool": "tool-rk",
-        "system": "system",
+        "auth": "auth-rk",
+        "tool": "tool",
+        "system": "system-rk",
         "workflow": "workflow"
     },
     "production": {

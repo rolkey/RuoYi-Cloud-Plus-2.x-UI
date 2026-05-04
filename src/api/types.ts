@@ -45,7 +45,7 @@ export interface VerifyCodeResult {
 }
 
 /**
- * 租户
+ * 医院
  */
 export interface TenantVO {
   companyName: string;

@@ -15,7 +15,6 @@
           v-if="tenantEnabled && tenantList.length > 1"
           v-model="companyName"
           class="min-w-244px"
-          clearable
           filterable
           reserve-keyword
           :placeholder="proxy.$t('navbar.selectTenant')"
@@ -129,9 +128,9 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const companyName = ref(undefined);
 const tenantList = ref<TenantVO[]>([]);
-// 是否切换了租户
+// 是否切换了医院
 const dynamic = ref(false);
-// 租户开关
+// 医院开关
 const tenantEnabled = ref(true);
 // 搜索菜单
 const searchMenuRef = ref<InstanceType<typeof SearchMenu>>();
@@ -159,18 +158,25 @@ const dynamicClearEvent = async () => {
   await proxy?.$tab.refreshPage();
 };
 
-/** 租户列表 */
+/** 医院列表 */
 const initTenantList = async () => {
   const { data } = await getTenantList(true);
   tenantEnabled.value = data.tenantEnabled === undefined ? true : data.tenantEnabled;
   if (tenantEnabled.value) {
     tenantList.value = data.voList;
-    // 仅保留用户有权限的租户
+    // 仅保留用户有权限的医院
     const accessibleTenantIds = userStore.tenantIds;
     if (accessibleTenantIds && accessibleTenantIds.length > 0) {
       tenantList.value = tenantList.value.filter((t: TenantVO) =>
         accessibleTenantIds.includes(String(t.tenantId))
       );
+    }
+    // 默认选中当前登录用户所属医院
+    const defaultTenant = tenantList.value.find(
+      (t: TenantVO) => String(t.tenantId) === String(userStore.tenantId)
+    );
+    if (defaultTenant) {
+      companyName.value = defaultTenant.tenantId;
     }
   }
 };

@@ -49,7 +49,7 @@ export default {
     switchLoginPage: '使用已有账户登录',
     rule: {
       tenantId: {
-        required: '请输入您的租户编号'
+        required: '请输入您的医院编号'
       },
       username: {
         required: '请输入您的账号',

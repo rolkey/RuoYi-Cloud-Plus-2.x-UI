@@ -2,7 +2,10 @@ import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { LoginData, LoginResult, VerifyCodeResult, TenantInfo } from './types';
 import { UserInfo } from '@/api/system/user/types';
+import { useServiceStore } from '@/store/modules/services';
 
+const auth = () => useServiceStore().servicePres.auth;
+const system = () => useServiceStore().servicePres.system;
 // pc端固定客户端授权id
 const clientId = import.meta.env.VITE_APP_CLIENT_ID;
 
@@ -17,7 +20,7 @@ export function login(data: LoginData): AxiosPromise<LoginResult> {
     grantType: data.grantType || 'password'
   };
   return request({
-    url: '/auth/login',
+    url: `/${auth()}/login`,
     headers: {
       isToken: false,
       isEncrypt: true,
@@ -36,7 +39,7 @@ export function register(data: any) {
     grantType: 'password'
   };
   return request({
-    url: '/auth/register',
+    url: `/${auth()}/register`, // 修改为动态前缀
     headers: {
       isToken: false,
       isEncrypt: true,
@@ -58,7 +61,7 @@ export function logout() {
     });
   }
   return request({
-    url: '/auth/logout',
+    url: `/${auth()}/logout`, // 修改为动态前缀
     method: 'post'
   });
 }
@@ -68,7 +71,7 @@ export function logout() {
  */
 export function getCodeImg(): AxiosPromise<VerifyCodeResult> {
   return request({
-    url: '/auth/code',
+    url: `/${auth()}/code`, // 修改为动态前缀
     headers: {
       isToken: false
     },
@@ -87,24 +90,23 @@ export function callback(data: LoginData): AxiosPromise<any> {
     grantType: 'social'
   };
   return request({
-    url: '/auth/social/callback',
+    url: `/${auth()}/social/callback`, // 修改为动态前缀
     method: 'post',
     data: LoginData
   });
 }
-
 // 获取用户详细信息
 export function getInfo(): AxiosPromise<UserInfo> {
   return request({
-    url: '/system/user/getInfo',
+    url: `/${system()}/user/getInfo`,
     method: 'get'
   });
 }
 
-// 获取租户列表
+// 获取医院列表
 export function getTenantList(isToken: boolean): AxiosPromise<TenantInfo> {
   return request({
-    url: '/auth/tenant/list',
+    url: `/${auth()}/tenant/list`,
     headers: {
       isToken: isToken
     },

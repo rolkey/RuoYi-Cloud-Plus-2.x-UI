@@ -10,7 +10,7 @@
             <el-form-item label="HIS编号" prop="tenantId">
               <el-input
                 v-model="queryParams.tenantId"
-                placeholder="请输入租户编号"
+                placeholder="请输入医院编号"
                 clearable
                 @keyup.enter="handleQuery"
               />
@@ -91,12 +91,12 @@
           </el-col>
           <el-col :span="1.5">
             <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantDict"
-              >同步租户字典</el-button
+              >同步医院字典</el-button
             >
           </el-col>
           <el-col :span="1.5">
             <el-button v-if="userId === 1" type="success" plain icon="Refresh" @click="handleSyncTenantConfig"
-              >同步租户参数配置</el-button
+              >同步医院参数配置</el-button
             >
           </el-col>
           <right-toolbar v-model:show-search="showSearch" @query-table="getList"></right-toolbar>
@@ -106,7 +106,7 @@
       <el-table v-loading="loading" border :data="tenantList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column v-if="false" label="id" align="center" prop="id" />
-        <el-table-column label="租户编号" align="center" prop="tenantId" />
+        <el-table-column label="医院编号" align="center" prop="tenantId" />
         <el-table-column label="联系人" align="center" prop="contactUserName" />
         <el-table-column label="联系电话" align="center" prop="contactPhone" />
         <el-table-column label="企业名称" align="center" prop="companyName" />
@@ -116,7 +116,7 @@
             <span>{{ proxy.parseTime(scope.row.expireTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="租户状态" align="center" prop="status">
+        <el-table-column label="医院状态" align="center" prop="status">
           <template #default="scope">
             <el-switch
               v-model="scope.row.status"
@@ -127,13 +127,22 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="150"
+          width="200"
           label="操作"
           align="center"
           fixed="right"
           class-name="small-padding fixed-width"
         >
           <template #default="scope">
+            <el-tooltip v-if="!scope.row.parentTenantId" content="添加子医院" placement="top">
+              <el-button
+                v-hasPermi="['system:tenant:add']"
+                link
+                type="primary"
+                icon="Plus"
+                @click="handleAddChild(scope.row)"
+              ></el-button>
+            </el-tooltip>
             <el-tooltip content="修改" placement="top">
               <el-button
                 v-hasPermi="['system:tenant:edit']"
@@ -175,7 +184,7 @@
       />
     </el-card>
 
-    <!-- 添加或修改租户对话框 -->
+    <!-- 添加或修改医院对话框 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body draggable>
       <el-form ref="tenantFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="企业名称" prop="companyName">
@@ -193,7 +202,7 @@
         <el-form-item v-if="!form.id" label="用户密码" prop="password">
           <el-input v-model="form.password" type="password" placeholder="请输入系统用户密码" maxlength="20" />
         </el-form-item>
-        <el-form-item label="租户套餐" prop="packageId">
+        <el-form-item label="医院套餐" prop="packageId">
           <el-select
             v-model="form.packageId"
             :disabled="!!form.tenantId"
@@ -222,12 +231,12 @@
         <el-form-item label="用户数量" prop="accountCount">
           <el-input v-model="form.accountCount" placeholder="请输入用户数量" />
         </el-form-item>
-        <el-form-item label="上级租户" prop="parentTenantId">
+        <el-form-item label="上级医院" prop="parentTenantId">
           <el-tree-select
             v-model="form.parentTenantId"
             :data="tenantTree"
             :props="{ value: 'id', label: 'companyName', children: 'children' }"
-            placeholder="请选择上级租户（留空为顶级租户）"
+            placeholder="请选择上级医院（留空为顶级医院）"
             clearable
             style="width: 100%"
             check-strictly
@@ -327,11 +336,12 @@ const data = reactive<PageData<TenantForm, TenantQuery>>({
     tenantId: '',
     contactUserName: '',
     contactPhone: '',
-    companyName: ''
+    companyName: '',
+    parentTenantId: ''
   },
   rules: {
     id: [{ required: true, message: 'id不能为空', trigger: 'blur' }],
-    tenantId: [{ required: true, message: '租户编号不能为空', trigger: 'blur' }],
+    // tenantId: [{ required: true, message: '医院编号不能为空', trigger: 'blur' }],
     contactUserName: [{ required: true, message: '联系人不能为空', trigger: 'blur' }],
     contactPhone: [{ required: true, message: '联系电话不能为空', trigger: 'blur' }],
     companyName: [{ required: true, message: '企业名称不能为空', trigger: 'blur' }],
@@ -348,19 +358,19 @@ const data = reactive<PageData<TenantForm, TenantQuery>>({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询所有租户套餐 */
+/** 查询所有医院套餐 */
 const getTenantPackage = async () => {
   const res = await selectTenantPackage();
   packageList.value = res.data;
 };
 
-/** 查询租户树 */
+/** 查询医院树 */
 const getTenantTree = async () => {
   const res = await listTenantTree();
   tenantTree.value = res.data;
 };
 
-/** 查询租户列表 */
+/** 查询医院列表 */
 const getList = async () => {
   loading.value = true;
   const res = await listTenant(queryParams.value);
@@ -369,11 +379,11 @@ const getList = async () => {
   loading.value = false;
 };
 
-// 租户套餐状态修改
+// 医院套餐状态修改
 const handleStatusChange = async (row: TenantVO) => {
   const text = row.status === '0' ? '启用' : '停用';
   try {
-    await proxy?.$modal.confirm('确认要"' + text + '""' + row.companyName + '"租户吗？');
+    await proxy?.$modal.confirm('确认要"' + text + '""' + row.companyName + '"医院吗？');
     await changeTenantStatus(row.id, row.tenantId, row.status);
     proxy?.$modal.msgSuccess(text + '成功');
   } catch {
@@ -418,7 +428,17 @@ const handleAdd = () => {
   getTenantPackage();
   getTenantTree();
   dialog.visible = true;
-  dialog.title = '添加分院';
+  dialog.title = '添加医院';
+};
+
+/** 添加子医院按钮操作 */
+const handleAddChild = async (row: TenantVO) => {
+  reset();
+  await getTenantPackage();
+  await getTenantTree();
+  form.value.parentTenantId = row.id;
+  dialog.visible = true;
+  dialog.title = '添加医院';
 };
 
 /** 修改按钮操作 */
@@ -430,7 +450,7 @@ const handleUpdate = async (row?: TenantVO) => {
   const res = await getTenant(_id);
   Object.assign(form.value, res.data);
   dialog.visible = true;
-  dialog.title = '修改分院';
+  dialog.title = '修改医院';
 };
 
 /** 提交按钮 */
@@ -453,17 +473,17 @@ const submitForm = () => {
 /** 删除按钮操作 */
 const handleDelete = async (row?: TenantVO) => {
   const _ids = row?.id || ids.value;
-  await proxy?.$modal.confirm('是否确认删除租户编号为"' + _ids + '"的数据项？');
+  await proxy?.$modal.confirm('是否确认删除医院编号为"' + _ids + '"的数据项？');
   loading.value = true;
   await delTenant(_ids).finally(() => (loading.value = false));
   await getList();
   proxy?.$modal.msgSuccess('删除成功');
 };
 
-/** 同步租户套餐按钮操作 */
+/** 同步医院套餐按钮操作 */
 const handleSyncTenantPackage = async (row: TenantVO) => {
   try {
-    await proxy?.$modal.confirm('是否确认同步租户套餐租户编号为"' + row.tenantId + '"的数据项？');
+    await proxy?.$modal.confirm('是否确认同步医院套餐医院编号为"' + row.tenantId + '"的数据项？');
     loading.value = true;
     await syncTenantPackage(row.tenantId, row.packageId);
     await getList();
@@ -486,16 +506,16 @@ const handleExport = () => {
   );
 };
 
-/**同步租户字典*/
+/**同步医院字典*/
 const handleSyncTenantDict = async () => {
-  await proxy?.$modal.confirm('确认要同步所有租户字典吗？');
+  await proxy?.$modal.confirm('确认要同步所有医院字典吗？');
   const res = await syncTenantDict();
   proxy?.$modal.msgSuccess(res.msg);
 };
 
-/**同步租户参数配置*/
+/**同步医院参数配置*/
 const handleSyncTenantConfig = async () => {
-  await proxy?.$modal.confirm('确认要同步所有租户参数配置吗？');
+  await proxy?.$modal.confirm('确认要同步所有医院参数配置吗？');
   const res = await syncTenantConfig();
   proxy?.$modal.msgSuccess(res.msg);
 };

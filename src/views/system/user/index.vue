@@ -397,30 +397,13 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
-            <el-form-item label="所属一级租户" prop="parentTenantId">
-              <el-tree-select
-                v-model="form.parentTenantId"
-                :data="tenantTree"
-                :props="{ value: 'tenantId', label: 'companyName', children: 'children' }"
-                placeholder="请选择所属一级租户"
-                clearable
-                style="width: 100%"
-                check-strictly
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
-            <el-form-item label="关联租户">
+            <el-form-item label="下级医院">
               <el-select
                 v-model="form.tenantIds"
                 filterable
                 multiple
-                placeholder="请选择关联的二级租户"
+                placeholder="请选择下级医院权限"
                 clearable
               >
                 <el-option
@@ -434,6 +417,21 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!-- <el-row>
+          <el-col :span="12" v-if="form.userId == null || form.userId != useUserStore().userId">
+            <el-form-item label="所属医院" prop="parentTenantId">
+              <el-tree-select
+                v-model="form.tenantId"
+                :data="tenantTree"
+                :props="{ value: 'tenantId', label: 'companyName', children: 'children' }"
+                placeholder="请选择所属医院"
+                clearable
+                style="width: 100%"
+                check-strictly
+              />
+            </el-form-item>
+          </el-col>
+        </el-row> -->
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
@@ -568,6 +566,7 @@ const dialog = reactive<DialogOption>({
 
 const initFormData: UserForm = {
   userId: undefined,
+  tenantId: undefined,
   deptId: undefined,
   userName: '',
   nickName: undefined,
@@ -580,8 +579,7 @@ const initFormData: UserForm = {
   postIds: [],
   roleIds: [],
   deptIds: [],
-  tenantIds: [],
-  parentTenantId: undefined
+  tenantIds: []
 };
 
 const initData: PageData<UserForm, UserQuery> = {
@@ -630,8 +628,8 @@ const initData: PageData<UserForm, UserQuery> = {
         trigger: 'blur'
       }
     ],
-    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }],
-    parentTenantId: [{ required: true, message: '所属一级租户不能为空', trigger: 'change' }]
+    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }]
+    // parentTenantId: [{ required: true, message: '所属一级医院不能为空', trigger: 'change' }]
   }
 };
 const data = reactive<PageData<UserForm, UserQuery>>(initData);
@@ -669,13 +667,13 @@ const getDeptTree = async () => {
   enabledDeptOptions.value = filterDisabledDept(res.data);
 };
 
-/** 加载租户列表 */
+/** 加载医院列表 */
 const getTenantList = async () => {
   const res = await listTenant({ pageNum: 1, pageSize: 1000 } as any);
   tenantOptions.value = res.rows || res.data || [];
 };
 
-/** 查询租户树（用于选择上级租户） */
+/** 查询医院树（用于选择上级医院） */
 const getTenantTree = async () => {
   const res = await listTenantTree();
   tenantTree.value = res.data;
@@ -857,7 +855,7 @@ const handleUpdate = async (row?: UserForm) => {
   form.value.roleIds = data.roleIds;
   form.value.deptIds = data.deptIds || [];
   form.value.tenantIds = data.tenantIds || [];
-  form.value.parentTenantId = data.parentTenantId;
+  // form.value.parentTenantId = data.parentTenantId;
   form.value.password = '';
   await getTenantTree();
 };
@@ -906,7 +904,7 @@ const resetForm = () => {
 };
 onMounted(() => {
   getDeptTree(); // 初始化部门数据
-  getTenantList(); // 初始化租户数据
+  getTenantList(); // 初始化医院数据
   getList(); // 初始化列表数据
   proxy?.getConfigKey('sys.user.initPassword').then((response) => {
     initPassword.value = response.data;

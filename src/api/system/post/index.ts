@@ -2,11 +2,14 @@ import request from '@/utils/request';
 import { PostForm, PostQuery, PostVO } from './types';
 import { AxiosPromise } from 'axios';
 import { DeptTreeVO } from '../dept/types';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
 
 // 查询岗位列表
 export function listPost(query: PostQuery): AxiosPromise<PostVO[]> {
   return request({
-    url: '/system/post/list',
+    url: `/${system()}/post/list`,
     method: 'get',
     params: query
   });
@@ -15,7 +18,7 @@ export function listPost(query: PostQuery): AxiosPromise<PostVO[]> {
 // 查询岗位详细
 export function getPost(postId: string | number): AxiosPromise<PostVO> {
   return request({
-    url: '/system/post/' + postId,
+    url: `/${system()}/post/${postId}`,
     method: 'get'
   });
 }
@@ -26,7 +29,7 @@ export function optionselect(
   postIds?: (number | string)[]
 ): AxiosPromise<PostVO[]> {
   return request({
-    url: '/system/post/optionselect',
+    url: `/${system()}/post/optionselect`,
     method: 'get',
     params: {
       postIds: postIds,
@@ -38,7 +41,7 @@ export function optionselect(
 // 新增岗位
 export function addPost(data: PostForm) {
   return request({
-    url: '/system/post',
+    url: `/${system()}/post`,
     method: 'post',
     data: data
   });
@@ -47,7 +50,7 @@ export function addPost(data: PostForm) {
 // 修改岗位
 export function updatePost(data: PostForm) {
   return request({
-    url: '/system/post',
+    url: `/${system()}/post`,
     method: 'put',
     data: data
   });
@@ -56,7 +59,7 @@ export function updatePost(data: PostForm) {
 // 删除岗位
 export function delPost(postId: string | number | (string | number)[]) {
   return request({
-    url: '/system/post/' + postId,
+    url: `/${system()}/post/${postId}`,
     method: 'delete'
   });
 }
@@ -66,7 +69,7 @@ export function delPost(postId: string | number | (string | number)[]) {
  */
 export const deptTreeSelect = (): AxiosPromise<DeptTreeVO[]> => {
   return request({
-    url: '/system/post/deptTree',
+    url: `/${system()}/post/deptTree`,
     method: 'get'
   });
 };

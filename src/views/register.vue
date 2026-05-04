@@ -95,7 +95,7 @@ const registerForm = ref<RegisterForm>({
   userType: 'sys_user'
 });
 
-// 租户开关
+// 医院开关
 const tenantEnabled = ref(true);
 
 const equalToPassword = (rule: any, value: string, callback: any) => {
@@ -127,7 +127,7 @@ const codeUrl = ref('');
 const loading = ref(false);
 const captchaEnabled = ref(true);
 const registerRef = ref<ElFormInstance>();
-// 租户列表
+// 医院列表
 const tenantList = ref<TenantVO[]>([]);
 
 const handleRegister = () => {

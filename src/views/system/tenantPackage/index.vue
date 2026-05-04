@@ -83,7 +83,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column v-if="false" label="租户套餐id" align="center" prop="packageId" />
+        <el-table-column v-if="false" label="医院套餐id" align="center" prop="packageId" />
         <el-table-column label="套餐名称" align="center" prop="packageName" />
         <el-table-column label="备注" align="center" prop="remark" />
         <el-table-column label="状态" align="center" prop="status">
@@ -129,7 +129,7 @@
       />
     </el-card>
 
-    <!-- 添加或修改租户套餐对话框 -->
+    <!-- 添加或修改医院套餐对话框 -->
     <el-dialog v-model="dialog.visible" :title="dialog.title" width="500px" append-to-body draggable>
       <el-form ref="tenantPackageFormRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="权限名称" prop="packageName">
@@ -222,7 +222,7 @@ const data = reactive<PageData<TenantPkgForm, TenantPkgQuery>>({
     packageName: ''
   },
   rules: {
-    packageId: [{ required: true, message: '租户套餐id不能为空', trigger: 'blur' }],
+    packageId: [{ required: true, message: '医院套餐id不能为空', trigger: 'blur' }],
     packageName: [{ required: true, message: '套餐名称不能为空', trigger: 'blur' }]
   }
 });
@@ -241,14 +241,14 @@ const getMenuAllCheckedKeys = (): any => {
   return checkedKeys;
 };
 
-/** 根据租户套餐ID查询菜单树结构 */
+/** 根据医院套餐ID查询菜单树结构 */
 const getPackageMenuTreeselect = async (packageId: string | number) => {
   const res = await tenantPackageMenuTreeselect(packageId);
   menuOptions.value = res.data.menus;
   return Promise.resolve(res);
 };
 
-/** 查询租户套餐列表 */
+/** 查询医院套餐列表 */
 const getList = async () => {
   loading.value = true;
   const res = await listTenantPackage(queryParams.value);
@@ -257,7 +257,7 @@ const getList = async () => {
   loading.value = false;
 };
 
-// 租户套餐状态修改
+// 医院套餐状态修改
 const handleStatusChange = async (row: TenantPkgVO) => {
   const text = row.status === '0' ? '启用' : '停用';
   const [err] = await to(
@@ -336,7 +336,7 @@ const handleAdd = async () => {
   reset();
   await getPackageMenuTreeselect(0);
   dialog.visible = true;
-  dialog.title = '添加分院权限';
+  dialog.title = '添加医院权限';
 };
 
 /** 修改按钮操作 */
@@ -347,7 +347,7 @@ const handleUpdate = async (row?: TenantPkgVO) => {
   form.value = response.data;
   const res = await getPackageMenuTreeselect(_packageId);
   dialog.visible = true;
-  dialog.title = '修改租户套餐';
+  dialog.title = '修改医院套餐';
   res.data.checkedKeys.forEach((v) => {
     nextTick(() => {
       menuTreeRef.value?.setChecked(v, true, false);
@@ -376,7 +376,7 @@ const submitForm = () => {
 /** 删除按钮操作 */
 const handleDelete = async (row?: TenantPkgVO) => {
   const _packageIds = row?.packageId || ids.value;
-  await proxy?.$modal.confirm('是否确认删除租户套餐编号为"' + _packageIds + '"的数据项？').finally(() => {
+  await proxy?.$modal.confirm('是否确认删除医院套餐编号为"' + _packageIds + '"的数据项？').finally(() => {
     loading.value = false;
   });
   await delTenantPackage(_packageIds);

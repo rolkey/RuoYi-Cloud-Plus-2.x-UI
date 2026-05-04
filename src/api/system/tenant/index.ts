@@ -5,7 +5,7 @@ import { useServiceStore } from '@/store/modules/services';
 
 const system = () => useServiceStore().servicePres.system;
 
-// 查询租户列表
+// 查询医院列表
 export function listTenant(query: TenantQuery): AxiosPromise<TenantVO[]> {
   return request({
     url: `/${system()}/tenant/list`,
@@ -14,7 +14,7 @@ export function listTenant(query: TenantQuery): AxiosPromise<TenantVO[]> {
   });
 }
 
-// 查询租户详细
+// 查询医院详细
 export function getTenant(id: string | number): AxiosPromise<TenantVO> {
   return request({
     url: `/${system()}/tenant/${id}`,
@@ -22,7 +22,7 @@ export function getTenant(id: string | number): AxiosPromise<TenantVO> {
   });
 }
 
-// 新增租户
+// 新增医院
 export function addTenant(data: TenantForm) {
   return request({
     url: `/${system()}/tenant`,
@@ -35,7 +35,7 @@ export function addTenant(data: TenantForm) {
   });
 }
 
-// 修改租户
+// 修改医院
 export function updateTenant(data: TenantForm) {
   return request({
     url: `/${system()}/tenant`,
@@ -44,7 +44,7 @@ export function updateTenant(data: TenantForm) {
   });
 }
 
-// 租户状态修改
+// 医院状态修改
 export function changeTenantStatus(id: string | number, tenantId: string | number, status: string) {
   const data = {
     id,
@@ -58,7 +58,7 @@ export function changeTenantStatus(id: string | number, tenantId: string | numbe
   });
 }
 
-// 删除租户
+// 删除医院
 export function delTenant(id: string | number | Array<string | number>) {
   return request({
     url: `/${system()}/tenant/${id}`,
@@ -66,7 +66,7 @@ export function delTenant(id: string | number | Array<string | number>) {
   });
 }
 
-// 动态切换租户
+// 动态切换医院
 export function dynamicTenant(tenantId: string | number) {
   return request({
     url: `/${system()}/tenant/dynamic/${tenantId}`,
@@ -74,7 +74,7 @@ export function dynamicTenant(tenantId: string | number) {
   });
 }
 
-// 清除动态租户
+// 清除动态医院
 export function dynamicClear() {
   return request({
     url: `/${system()}/tenant/dynamic/clear`,
@@ -82,7 +82,7 @@ export function dynamicClear() {
   });
 }
 
-// 同步租户套餐
+// 同步医院套餐
 export function syncTenantPackage(tenantId: string | number, packageId: string | number) {
   const data = {
     tenantId,
@@ -95,7 +95,7 @@ export function syncTenantPackage(tenantId: string | number, packageId: string |
   });
 }
 
-// 查询租户树
+// 查询医院树
 export function listTenantTree(): AxiosPromise<TenantVO[]> {
   return request({
     url: `/${system()}/tenant/tree`,

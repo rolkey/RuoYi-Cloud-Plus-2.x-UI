@@ -1,11 +1,14 @@
 import request from '@/utils/request';
 import { ConfigForm, ConfigQuery, ConfigVO } from './types';
 import { AxiosPromise } from 'axios';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
 
 // 查询参数列表
 export function listConfig(query: ConfigQuery): AxiosPromise<ConfigVO[]> {
   return request({
-    url: '/system/config/list',
+    url: `/${system()}/config/list`,
     method: 'get',
     params: query
   });
@@ -14,7 +17,7 @@ export function listConfig(query: ConfigQuery): AxiosPromise<ConfigVO[]> {
 // 查询参数详细
 export function getConfig(configId: string | number): AxiosPromise<ConfigVO> {
   return request({
-    url: '/system/config/' + configId,
+    url: `/${system()}/config/${configId}`,
     method: 'get'
   });
 }
@@ -22,7 +25,7 @@ export function getConfig(configId: string | number): AxiosPromise<ConfigVO> {
 // 根据参数键名查询参数值
 export function getConfigKey(configKey: string): AxiosPromise<string> {
   return request({
-    url: '/system/config/configKey/' + configKey,
+    url: `/${system()}/config/configKey/${configKey}`,
     method: 'get'
   });
 }
@@ -30,7 +33,7 @@ export function getConfigKey(configKey: string): AxiosPromise<string> {
 // 新增参数配置
 export function addConfig(data: ConfigForm) {
   return request({
-    url: '/system/config',
+    url: `/${system()}/config`,
     method: 'post',
     data: data
   });
@@ -39,7 +42,7 @@ export function addConfig(data: ConfigForm) {
 // 修改参数配置
 export function updateConfig(data: ConfigForm) {
   return request({
-    url: '/system/config',
+    url: `/${system()}/config`,
     method: 'put',
     data: data
   });
@@ -48,7 +51,7 @@ export function updateConfig(data: ConfigForm) {
 // 修改参数配置
 export function updateConfigByKey(key: string, value: any) {
   return request({
-    url: '/system/config/updateByKey',
+    url: `/${system()}/config/updateByKey`,
     method: 'put',
     data: {
       configKey: key,
@@ -60,7 +63,7 @@ export function updateConfigByKey(key: string, value: any) {
 // 删除参数配置
 export function delConfig(configId: string | number | Array<string | number>) {
   return request({
-    url: '/system/config/' + configId,
+    url: `/${system()}/config/${configId}`,
     method: 'delete'
   });
 }
@@ -68,7 +71,7 @@ export function delConfig(configId: string | number | Array<string | number>) {
 // 刷新参数缓存
 export function refreshCache() {
   return request({
-    url: '/system/config/refreshCache',
+    url: `/${system()}/config/refreshCache`,
     method: 'delete'
   });
 }

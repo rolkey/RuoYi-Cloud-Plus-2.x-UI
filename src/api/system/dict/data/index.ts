@@ -1,10 +1,14 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { DictDataForm, DictDataQuery, DictDataVO } from './types';
+import { useServiceStore } from '@/store/modules/services';
+
+const system = () => useServiceStore().servicePres.system;
+
 // 根据字典类型查询字典数据信息
 export function getDicts(dictType: string): AxiosPromise<DictDataVO[]> {
   return request({
-    url: '/system/dict/data/type/' + dictType,
+    url: `/${system()}/dict/data/type/${dictType}`,
     method: 'get'
   });
 }
@@ -12,7 +16,7 @@ export function getDicts(dictType: string): AxiosPromise<DictDataVO[]> {
 // 查询字典数据列表
 export function listData(query: DictDataQuery): AxiosPromise<DictDataVO[]> {
   return request({
-    url: '/system/dict/data/list',
+    url: `/${system()}/dict/data/list`,
     method: 'get',
     params: query
   });
@@ -21,7 +25,7 @@ export function listData(query: DictDataQuery): AxiosPromise<DictDataVO[]> {
 // 查询字典数据详细
 export function getData(dictCode: string | number): AxiosPromise<DictDataVO> {
   return request({
-    url: '/system/dict/data/' + dictCode,
+    url: `/${system()}/dict/data/${dictCode}`,
     method: 'get'
   });
 }
@@ -29,7 +33,7 @@ export function getData(dictCode: string | number): AxiosPromise<DictDataVO> {
 // 新增字典数据
 export function addData(data: DictDataForm) {
   return request({
-    url: '/system/dict/data',
+    url: `/${system()}/dict/data`,
     method: 'post',
     data: data
   });
@@ -38,7 +42,7 @@ export function addData(data: DictDataForm) {
 // 修改字典数据
 export function updateData(data: DictDataForm) {
   return request({
-    url: '/system/dict/data',
+    url: `/${system()}/dict/data`,
     method: 'put',
     data: data
   });
@@ -47,7 +51,7 @@ export function updateData(data: DictDataForm) {
 // 删除字典数据
 export function delData(dictCode: string | number | Array<string | number>) {
   return request({
-    url: '/system/dict/data/' + dictCode,
+    url: `/${system()}/dict/data/${dictCode}`,
     method: 'delete'
   });
 }

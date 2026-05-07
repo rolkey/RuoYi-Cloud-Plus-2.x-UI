@@ -76,16 +76,16 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="icon" label="图标" align="center" width="100">
+        <el-table-column prop="icon" label="图标" align="center" width="50">
           <template #default="scope">
             <svg-icon :icon-class="scope.row.icon" />
           </template>
         </el-table-column>
-        <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
+        <el-table-column prop="orderNum" label="排序" align="center" width="50"></el-table-column>
         <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="path" label="路由" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="status" label="状态" width="80">
+        <el-table-column prop="status" label="状态" align="center" width="60">
           <template #default="scope">
             <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
           </template>
@@ -95,7 +95,7 @@
             <span>{{ scope.row.createTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="80">
+        <el-table-column fixed="right" label="操作" header-align="center" width="80">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
               <el-button

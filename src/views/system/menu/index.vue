@@ -90,12 +90,12 @@
             <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime">
+        <el-table-column label="创建时间" align="center" prop="createTime" width="140">
           <template #default="scope">
             <span>{{ scope.row.createTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="180">
+        <el-table-column fixed="right" label="操作" width="80">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
               <el-button

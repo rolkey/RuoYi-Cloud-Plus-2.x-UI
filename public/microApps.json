@@ -7,6 +7,12 @@
             "container": "#his"
         },
         {
+            "name": "person",
+            "entry": "http://192.168.168.1:10303",
+            "activeRule": "/person",
+            "container": "#person"
+        },
+        {
             "name": "lis",
             "entry": "http://192.168.168.1:10302",
             "activeRule": "/lis",
@@ -19,6 +25,12 @@
             "entry": "/his",
             "activeRule": "/his",
             "container": "#his"
+        },
+        {
+            "name": "person",
+            "entry": "/person",
+            "activeRule": "/person",
+            "container": "#person"
         },
         {
             "name": "lis",

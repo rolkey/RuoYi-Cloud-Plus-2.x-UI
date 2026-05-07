@@ -30,8 +30,9 @@ scp ./dist.tar.gz db12_drg:/var/www/ && ssh db12_drg "cd /var/www && tar -xzf di
 
 ## 链接子项目的静态文件
 
-- 注意：要在普通命令行上运行，不能在管理员模式下运行，也不能在powershell上运行
+- 注意：要在普通命令行上运行，不能在管理员模式下运行，也不能在powershell上运行，要在command中运行
 
 ```bash
 mklink /J .\public\lis ..\..\work_code7\poct-ui-lis\public
+mklink /J .\public\person ..\..\work_code7\poct-ui-person\public
 ```

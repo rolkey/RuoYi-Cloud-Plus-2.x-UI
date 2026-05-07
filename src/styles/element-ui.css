@@ -260,3 +260,8 @@ label.custom-checkbox {
 .el-table__inner-wrapper {
   border: 1px solid var(--el-border-color-lighter);
 }
+
+/* 右侧固定列左侧竖线 */
+.el-table .el-table-fixed-column--right.is-first-column {
+  border-left: 1px solid var(--el-border-color-lighter) !important;
+}

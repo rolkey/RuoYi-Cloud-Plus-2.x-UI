@@ -10,6 +10,7 @@
   --el-menu-item-height: 28px;
   --el-menu-base-level-padding: 5px;
   --el-font-weight-primary: 400 !important;
+  --el-date-editor-width: 240px !important;
 
   /* 形状 */
   --el-border-radius-base: 0;
@@ -264,4 +265,9 @@ label.custom-checkbox {
 /* 右侧固定列左侧竖线 */
 .el-table .el-table-fixed-column--right.is-first-column {
   border-left: 1px solid var(--el-border-color-lighter) !important;
+}
+
+.el-date-editor.el-input,
+.el-date-editor.el-input__wrapper {
+  width: 240px !important;
 }

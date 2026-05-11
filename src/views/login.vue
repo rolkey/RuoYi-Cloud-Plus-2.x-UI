@@ -107,7 +107,7 @@ const { t } = useI18n();
 const loginForm = ref<LoginData>({
   tenantId: undefined,
   username: 'admin',
-  password: 'admin123',
+  password: import.meta.env.DEV ? 'admin123' : '',
   rememberMe: false,
   code: '',
   uuid: ''

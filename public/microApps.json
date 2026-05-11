@@ -13,6 +13,12 @@
             "container": "#person"
         },
         {
+            "name": "qc",
+            "entry": "http://192.168.168.1:10302",
+            "activeRule": "/qc",
+            "container": "#qc"
+        },
+        {
             "name": "lis",
             "entry": "http://192.168.168.1:10302",
             "activeRule": "/lis",
@@ -31,6 +37,12 @@
             "entry": "/person",
             "activeRule": "/person",
             "container": "#person"
+        },
+        {
+            "name": "qc",
+            "entry": "/qc",
+            "activeRule": "/qc",
+            "container": "#qc"
         },
         {
             "name": "lis",

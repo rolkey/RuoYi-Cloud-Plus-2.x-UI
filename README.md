@@ -35,4 +35,5 @@ scp ./dist.tar.gz db12_drg:/var/www/ && ssh db12_drg "cd /var/www && tar -xzf di
 ```bash
 mklink /J .\public\lis ..\..\work_code7\poct-ui-lis\public
 mklink /J .\public\person ..\..\work_code7\poct-ui-person\public
+mklink /J .\public\qc ..\..\work_code7\poct-ui-lis\public
 ```

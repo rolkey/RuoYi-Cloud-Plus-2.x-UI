@@ -10,6 +10,9 @@ rm -rf node_modules pnpm-lock.yaml
 npm cache clean --force
 pnpm i
 
+# 允许脚本执行
+pnpm approve-builds
+
 # 编译
 rm -rf dist && rm -f dist.tar.gz && pnpm build:prod && tar -czf dist.tar.gz dist
 ```

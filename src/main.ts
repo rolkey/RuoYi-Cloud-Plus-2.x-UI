@@ -35,6 +35,9 @@ import ElementIcons from '@/plugins/svgicon';
 // permission control
 import './permission';
 
+// websocket对象
+import { initWebSocket } from '@/utils/websocket';
+
 // 开发者工具保护
 import { initDevToolsProtection } from '@/utils/devtools-protection';
 
@@ -71,6 +74,13 @@ app.use(plugins);
 directive(app);
 
 app.mount('#app');
+
+// 初始化
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const resource = useServiceStore().servicePres.resource;
+initWebSocket(
+  protocol + window.location.host + import.meta.env.VITE_APP_BASE_API + '/' + resource + '/websocket'
+);
 
 // 初始化开发者工具保护（仅生产环境）
 initDevToolsProtection();

@@ -60,13 +60,13 @@
             </el-popover>
           </div>
         </el-tooltip>
-        <el-tooltip content="Github" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="Github" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
-        <el-tooltip :content="proxy.$t('navbar.document')" effect="dark" placement="bottom">
+        <!-- <el-tooltip :content="proxy.$t('navbar.document')" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
+        </el-tooltip> -->
 
         <el-tooltip :content="proxy.$t('navbar.full')" effect="dark" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -117,6 +117,7 @@ import { TenantVO } from '@/api/types';
 import notice from './notice/index.vue';
 import router from '@/router';
 import { ElMessageBoxOptions } from 'element-plus/es/components/message-box/src/message-box.type';
+import { subscribe } from '@/api/websocket';
 
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -179,6 +180,11 @@ const initTenantList = async () => {
       companyName.value = defaultTenant.tenantId;
     }
   }
+
+  // 订阅消息
+  subscribe(['system', 'system/sysNotice']).catch((error) => {
+    console.log(error);
+  });
 };
 
 defineExpose({

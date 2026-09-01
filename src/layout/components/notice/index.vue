@@ -25,6 +25,8 @@
 
 <script setup lang="ts" name="layoutBreadcrumbUserNews">
 import { useNoticeStore } from '@/store/modules/notice';
+import { subscribe } from '@/api/websocket';
+import { msgBus } from '@/micro/messageBus';
 
 const noticeStore = useNoticeStore();
 const { readAll } = useNoticeStore();
@@ -45,6 +47,17 @@ const getTableData = async () => {
   state.loading = false;
 };
 
+// 接收 WebSocket 推送消息并加入 newsList
+const onWsMessage = (data: any) => {
+  const message = typeof data === 'string' ? data : (data?.message ?? JSON.stringify(data));
+  noticeStore.addNotice({
+    message,
+    read: false,
+    time: new Date().toLocaleString()
+  });
+  newsList.value = noticeStore.state.notices;
+};
+
 //点击消息，写入已读
 const onNewsClick = (item: any) => {
   newsList.value[item].read = true;
@@ -61,6 +74,18 @@ onMounted(() => {
   nextTick(() => {
     getTableData();
   });
+
+  // 订阅消息
+  subscribe(['system', 'system/sysNotice']).catch((error) => {
+    console.log(error);
+  });
+
+  // 监听 WebSocket 推送消息
+  msgBus.on('ws:system/sysNotice', onWsMessage);
+});
+
+onUnmounted(() => {
+  msgBus.off('ws:system/sysNotice', onWsMessage);
 });
 </script>
 

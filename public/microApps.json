@@ -14,7 +14,7 @@
         },
         {
             "name": "qc",
-            "entry": "http://192.168.168.1:10302",
+            "entry": "http://192.168.168.1:10304",
             "activeRule": "/qc",
             "container": "#qc"
         },

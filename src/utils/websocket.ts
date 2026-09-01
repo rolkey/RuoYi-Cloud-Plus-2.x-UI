@@ -1,6 +1,5 @@
 import { getToken } from '@/utils/auth';
-import { ElNotification } from 'element-plus';
-import { useNoticeStore } from '@/store/modules/notice';
+import { msgBus } from '@/micro/messageBus';
 
 // 初始化socket
 export const initWebSocket = (url: any) => {
@@ -35,17 +34,14 @@ export const initWebSocket = (url: any) => {
       if (e.data.indexOf('ping') > 0) {
         return;
       }
-      useNoticeStore().addNotice({
-        message: e.data,
-        read: false,
-        time: new Date().toLocaleString()
-      });
-      ElNotification({
-        title: '消息',
-        message: e.data,
-        type: 'success',
-        duration: 3000
-      });
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg && msg.type) {
+          msgBus.emit('ws:' + msg.type, msg.data);
+        }
+      } catch {
+        // 忽略非 JSON 消息
+      }
     }
   });
 };

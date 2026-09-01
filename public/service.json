@@ -3,12 +3,14 @@
         "auth": "auth",
         "tool": "tool",
         "system": "system",
-        "workflow": "workflow"
+        "workflow": "workflow",
+        "resource": "resource"
     },
     "production": {
         "auth": "auth",
         "tool": "tool",
         "system": "system",
-        "workflow": "workflow"
+        "workflow": "workflow",
+        "resource": "resource"
     }
 }

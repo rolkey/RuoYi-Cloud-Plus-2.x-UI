@@ -26,6 +26,7 @@ import SideBar from './components/Sidebar/index.vue';
 import { AppMain, Navbar, Settings, TagsView } from './components';
 import { useAppStore } from '@/store/modules/app';
 import { useSettingsStore } from '@/store/modules/settings';
+import { useServiceStore } from '@/store/modules/services';
 import { initWebSocket } from '@/utils/websocket';
 import { initSSE } from '@/utils/sse';
 import { subscribe } from '@/api/websocket';
@@ -70,7 +71,10 @@ onMounted(() => {
 
 onMounted(() => {
   const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-  initWebSocket(protocol + window.location.host + import.meta.env.VITE_APP_BASE_API + '/resource/websocket');
+  const resource = useServiceStore().servicePres.resource;
+  initWebSocket(
+    protocol + window.location.host + import.meta.env.VITE_APP_BASE_API + '/' + resource + '/websocket'
+  );
   subscribe(['system', 'system/sysNotice']).catch(() => {});
 });
 

@@ -3,4 +3,5 @@ export interface ServiceItem {
   tool: string;
   system: string;
   workflow: string;
+  resource: string;
 }

@@ -1,11 +1,12 @@
 import request from '@/utils/request';
+import { useServiceStore } from '@/store/modules/services';
 
-const base = '/resource/websocket';
+const resource = () => useServiceStore().servicePres.resource;
 
 // 订阅主题
 export function subscribe(types: string[]) {
   return request({
-    url: `${base}/subscribe`,
+    url: `/${resource()}/websocket/subscribe`,
     method: 'post',
     data: types
   });
@@ -14,7 +15,7 @@ export function subscribe(types: string[]) {
 // 退订主题
 export function unsubscribe(types: string[]) {
   return request({
-    url: `${base}/unsubscribe`,
+    url: `/${resource()}/websocket/unsubscribe`,
     method: 'post',
     data: types
   });
@@ -23,7 +24,7 @@ export function unsubscribe(types: string[]) {
 // 查询当前订阅列表
 export function getSubscription() {
   return request({
-    url: `${base}/subscription`,
+    url: `/${resource()}/websocket/subscription`,
     method: 'get'
   });
 }

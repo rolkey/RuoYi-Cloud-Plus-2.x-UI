@@ -42,6 +42,7 @@ scp ./dist.tar.gz al208a:/var/www/ && ssh al208a "cd /var/www && tar -xzf dist.t
 Remove-Item .\public\lis -Force
 Remove-Item .\public\person -Force
 Remove-Item .\public\qc -Force
+Remove-Item .\public\his -Force
 
 # 2. 创建新的符号链接指向正确的路径
 # lis -> 指向 poct-frontend/packages/lis/public
@@ -52,4 +53,7 @@ New-Item -ItemType Junction -Path .\public\person -Target "..\..\work_code7\poct
 
 # qc -> 如果也有对应的路径
 New-Item -ItemType Junction -Path .\public\qc -Target "..\..\work_code7\poct-frontend\packages\qc\public"
+
+# qc -> 如果也有对应的路径
+New-Item -ItemType Junction -Path .\public\his -Target "..\..\work_code7\his-frontend\packages\his\public"
 ```

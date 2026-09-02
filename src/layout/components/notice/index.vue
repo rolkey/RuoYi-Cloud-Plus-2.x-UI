@@ -25,7 +25,6 @@
 
 <script setup lang="ts" name="layoutBreadcrumbUserNews">
 import { useNoticeStore } from '@/store/modules/notice';
-import { subscribe } from '@/api/websocket';
 
 const noticeStore = useNoticeStore();
 const newsList = computed(() => noticeStore.notices);
@@ -47,13 +46,6 @@ const onNewsClick = (index: number) => {
 const onGoToGiteeClick = () => {
   window.open('https://gitee.com/dromara/RuoYi-Vue-Plus/tree/5.X/');
 };
-
-onMounted(() => {
-  // 订阅消息
-  subscribe(['system', 'system/sysNotice']).catch((error) => {
-    console.log(error);
-  });
-});
 </script>
 
 <style lang="scss" scoped>

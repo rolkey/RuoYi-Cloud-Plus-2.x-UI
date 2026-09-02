@@ -26,43 +26,21 @@
 <script setup lang="ts" name="layoutBreadcrumbUserNews">
 import { useNoticeStore } from '@/store/modules/notice';
 import { subscribe } from '@/api/websocket';
-import { msgBus } from '@/micro/messageBus';
 
 const noticeStore = useNoticeStore();
-const { readAll } = useNoticeStore();
+const newsList = computed(() => noticeStore.notices);
 
 // 定义变量内容
 const state = reactive({
   loading: false
 });
-const newsList = ref([]) as any;
 
-/**
- * 初始化数据
- * @returns
- */
-const getTableData = async () => {
-  state.loading = true;
-  newsList.value = noticeStore.state.notices;
-  state.loading = false;
-};
-
-// 接收 WebSocket 推送消息并加入 newsList
-const onWsMessage = (data: any) => {
-  const message = typeof data === 'string' ? data : (data?.message ?? JSON.stringify(data));
-  noticeStore.addNotice({
-    message,
-    read: false,
-    time: new Date().toLocaleString()
-  });
-  newsList.value = noticeStore.state.notices;
-};
+// 全部已读
+const readAll = () => noticeStore.readAll();
 
 //点击消息，写入已读
-const onNewsClick = (item: any) => {
-  newsList.value[item].read = true;
-  //并且写入pinia
-  noticeStore.state.notices = newsList.value;
+const onNewsClick = (index: number) => {
+  noticeStore.readOne(index);
 };
 
 // 前往通知中心点击
@@ -71,21 +49,10 @@ const onGoToGiteeClick = () => {
 };
 
 onMounted(() => {
-  nextTick(() => {
-    getTableData();
-  });
-
   // 订阅消息
   subscribe(['system', 'system/sysNotice']).catch((error) => {
     console.log(error);
   });
-
-  // 监听 WebSocket 推送消息
-  msgBus.on('ws:system/sysNotice', onWsMessage);
-});
-
-onUnmounted(() => {
-  msgBus.off('ws:system/sysNotice', onWsMessage);
 });
 </script>
 

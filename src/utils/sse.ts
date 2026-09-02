@@ -27,9 +27,8 @@ export const initSSE = (url: any) => {
   watch(data, () => {
     if (!data.value) return;
     useNoticeStore().addNotice({
-      message: data.value,
-      read: false,
-      time: new Date().toLocaleString()
+      type: 'sse',
+      message: data.value
     });
     ElNotification({
       title: '消息',

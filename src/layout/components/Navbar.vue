@@ -121,6 +121,7 @@ import { TenantVO } from '@/api/types';
 import notice from './notice/index.vue';
 import router from '@/router';
 import { ElMessageBoxOptions } from 'element-plus/es/components/message-box/src/message-box.type';
+import { subscribe } from '@/api/websocket';
 
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -182,6 +183,11 @@ const initTenantList = async () => {
       companyName.value = defaultTenant.tenantId;
     }
   }
+
+  // 订阅消息
+  subscribe(['system', 'system/sysNotice']).catch((error) => {
+    console.log(error);
+  });
 };
 
 defineExpose({

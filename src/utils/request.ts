@@ -127,6 +127,8 @@ service.interceptors.response.use(
     const code = res.data.code || HttpStatus.SUCCESS;
     // 获取错误信息
     const msg = errorCode[code] || res.data.msg || errorCode['default'];
+    // 获取请求路径
+    const requestUrl = res.config?.url || '未知路径';
     // 二进制数据则直接返回
     if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
       return res.data;
@@ -162,7 +164,7 @@ service.interceptors.response.use(
       return Promise.reject(new Error(msg));
     } else if (code !== HttpStatus.SUCCESS) {
       ElNotification.error({ title: msg });
-      return Promise.reject('error');
+      return Promise.reject(`${msg} (请求路径: ${requestUrl})`);
     } else {
       return Promise.resolve(res.data);
     }

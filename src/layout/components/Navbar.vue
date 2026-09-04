@@ -121,7 +121,8 @@ import { TenantVO } from '@/api/types';
 import notice from './notice/index.vue';
 import router from '@/router';
 import { ElMessageBoxOptions } from 'element-plus/es/components/message-box/src/message-box.type';
-import { subscribe } from '@/api/websocket';
+import { subscribe, unsubscribe } from '@/api/websocket';
+import { msgBus } from '@/micro/messageBus';
 
 const appStore = useAppStore();
 const userStore = useUserStore();
@@ -183,16 +184,18 @@ const initTenantList = async () => {
       companyName.value = defaultTenant.tenantId;
     }
   }
-
-  // 订阅消息
-  subscribe(['system', 'system/sysNotice']).catch((error) => {
-    console.log(error);
-  });
 };
 
 defineExpose({
   initTenantList
 });
+
+// 订阅消息
+const subscribeMessages = () => {
+  subscribe(['system', 'system/sysNotice']).catch((error) => {
+    console.log(error);
+  });
+};
 
 const toggleSideBar = () => {
   appStore.toggleSideBar(false);
@@ -230,6 +233,17 @@ const handleCommand = (command: string) => {
     commandMap[command]();
   }
 };
+
+onMounted(() => {
+  // 连接（含重连）成功后通过消息总线重新订阅，业务与 websocket 连接层隔离
+  msgBus.on('ws:connected', subscribeMessages);
+});
+
+onUnmounted(() => {
+  // 取消订阅
+  unsubscribe(['system', 'system/sysNotice']);
+  msgBus.off('ws:connected', subscribeMessages);
+});
 </script>
 
 <style lang="scss" scoped>

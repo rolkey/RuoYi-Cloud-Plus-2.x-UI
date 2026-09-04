@@ -30,21 +30,25 @@ export const initWebSocket = (url: any) => {
     },
     onConnected() {
       console.log('websocket已经连接');
+      msgBus.emit('ws:connected');
     },
     onDisconnected() {
       console.log('websocket已经断开');
+      msgBus.emit('ws:disconnected');
     },
     onMessage: (_, e) => {
       if (e.data.indexOf('ping') > 0) {
         return;
       }
       try {
+        console.log('websocket收到消息', e.data);
         const msg = JSON.parse(e.data);
         if (msg && msg.type) {
           msgBus.emit('ws:' + msg.type, msg.data);
         }
-      } catch {
+      } catch (e) {
         // 忽略非 JSON 消息
+        console.error(e);
       }
     }
   });

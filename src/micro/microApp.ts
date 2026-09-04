@@ -39,8 +39,14 @@ export function createMicroApp(path: string, microId: string): Promise<void> {
             }
           },
           {
+            // sandbox: {
+            //   experimentalStyleIsolation: true
+            // }
             sandbox: {
-              experimentalStyleIsolation: false
+              // 如果是 Vite 子应用，建议将 strictStyleIsolation 设为 false
+              strictStyleIsolation: false,
+              // 或者尝试使用 experimentalStyleIsolation
+              experimentalStyleIsolation: true
             }
           }
         );
